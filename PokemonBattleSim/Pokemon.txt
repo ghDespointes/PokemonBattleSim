@@ -1,0 +1,17 @@
+[1]
+Name=Venusaur
+Type=Grass,Poison
+BaseStats=80,82,83,100,100,80
+Moves=
+
+[2]
+Name=Charizard
+Type=Fire,Flying
+BaseStats=78,84,78,109,85,100
+Moves=
+
+[3]
+Name=Blastoise
+Type=Water
+BaseStats=79,83,100,85,105,78
+Moves=

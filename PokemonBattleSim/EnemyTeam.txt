@@ -1,0 +1,38 @@
+#Name @ Item
+#Ability: Ability Name
+#EVs: # Stat / # Stat / # Stat
+#Nature Name Nature
+#IVs: # Stat						Default to 31 all
+#- MoveName
+#- MoveName
+#- MoveName
+#- MoveName
+
+Blastoise @ Leftovers  
+Ability: Torrent
+EVs: 252 Hp / 252 Def / 4 SpD
+Naive Nature  
+IVs: 0 Atk
+- Flamethrower
+- Bubble
+- Tackle
+- Bite
+
+Charizard @ Life Orb
+Ability: Blaze
+EVs: 252 SpA / 4 Def / 252 Spe
+Timid Nature  
+IVs: 0 Atk
+- Flamethrower
+- Bubble
+- Tackle
+- Tail whip
+
+Venusaur @ Black Sludge
+Ability: Overgrow
+EVs: 252 Hp / 252 SpD / 4 Spe
+Naive Nature
+- Flamethrower
+- Bubble
+- Tackle
+- Tail whip

@@ -1,0 +1,18 @@
+﻿  PokemonBattleSim.cpp
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\util.h(49): warning C4091: 'static ': ignored on left of 'Util' when no variable is declared
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\filereader.h(23): error C2065: 'Pokemon': undeclared identifier
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\filereader.h(23): error C2923: 'std::unordered_map': 'Pokemon' is not a valid template type argument for parameter '_Ty'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\unordered_map(82): error C3203: 'pair': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\filereader.h(27): warning C4091: 'static ': ignored on left of 'FileReader' when no variable is declared
+  Pokemon.cpp
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\util.h(49): warning C4091: 'static ': ignored on left of 'Util' when no variable is declared
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\filereader.h(23): error C2065: 'Pokemon': undeclared identifier
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\filereader.h(23): error C2923: 'std::unordered_map': 'Pokemon' is not a valid template type argument for parameter '_Ty'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\unordered_map(82): error C3203: 'pair': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\filereader.h(27): warning C4091: 'static ': ignored on left of 'FileReader' when no variable is declared
+  FileReader.cpp
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\util.h(49): warning C4091: 'static ': ignored on left of 'Util' when no variable is declared
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\filereader.h(27): warning C4091: 'static ': ignored on left of 'FileReader' when no variable is declared
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\filereader.cpp(35): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\filereader.cpp(35): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
+  Generating Code...
