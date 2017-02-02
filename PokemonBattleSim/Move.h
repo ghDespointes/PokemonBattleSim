@@ -74,5 +74,6 @@ public:
 	string getDescription();
 
 	void print();
+	void printBattleInfo();
 };
 

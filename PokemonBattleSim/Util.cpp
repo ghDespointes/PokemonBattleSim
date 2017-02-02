@@ -1,7 +1,7 @@
 #include "Util.h"
 #include "FileReader.h"
-#include "Move.h"
-#include "Pokemon.h"
+//#include "Move.h"
+//#include "Pokemon.h"
 
 //Set the location of main move and pokemon files
 const string Util::POKE_DEF_LOC = "Pokemon.txt";
@@ -25,6 +25,12 @@ Move Util::getMove(string intName) {
 //Returns the pokemon based on its name
 Pokemon Util::getPoke(string intName) {
 	return pokeHash.at(intName);
+}
+
+//Return the number of pokemon of that name that exists
+//Basically used to usee if it exists
+int Util::checkMove(string intName) {
+	return moveHash.count(intName);
 }
 
 //Returns the correct corresponding type as a string

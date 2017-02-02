@@ -1,7 +1,10 @@
 #pragma once
 
 #include "Util.h"
-#include "ActionManager.h"
+#include "Move.h"
+#include "ActivePokemon.h"
+#include "TurnAction.h"
+#include "Team.h"
 
 //Utility class in charge of any move effects
 class MoveEffectManager

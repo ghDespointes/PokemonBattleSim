@@ -179,6 +179,9 @@ public:
 	static Move getMove(string intName);
 	static Pokemon getPoke(string intName);
 
+	//Checks to see if a pokemon exists
+	static int checkMove(string intName);
+
 	//Convert between enums and string
 		//Used when parsing and printing information to the player
 	static string getPokeTypeStringFromEnum(PokeType type);

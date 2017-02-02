@@ -42,6 +42,16 @@ int Team::findPoke(string name) {
 	return -1;
 }
 
+bool Team::checkIfTeamAlive() {
+	for (int i = 0; i < team.size(); i++) {
+		if (team[i].getStatus() != Util::Fainted) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 //Print all the debug information of each pokemon
 void Team::print() {
 	cout << "Printing Team" << endl;

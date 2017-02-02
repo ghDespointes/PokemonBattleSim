@@ -7,7 +7,7 @@
 
 #include "Util.h"
 #include "ActiveMove.h"
-#include "Pokemon.h";
+#include "Pokemon.h"
 #include "TurnAction.h"
 
 using namespace std;

@@ -502,7 +502,6 @@ bool ActivePokemon::decrementVolStatus(Util::VolStatus volStat) {
 	}
 	// When cured of status, state it
 	else if (volStatus[volStat] == 0 && volStat == Util::Confused) {
-		cout << endl;
 		cout << name << " snapped out of its confusion!" << endl;
 
 		return false;
@@ -548,7 +547,6 @@ int ActivePokemon::getPoison() {
 //return false if still asleep
 bool ActivePokemon::decrementSleep() {
 	sleepTimer--;
-	cout << sleepTimer << endl;
 
 	if (sleepTimer <= 0) {
 		sleepTimer = 0;
@@ -819,7 +817,6 @@ void ActivePokemon::printBasicInfo() {
 
 		if (i == 1) { cout << endl; }
 	}
-
 	cout << endl;
 }
 
@@ -844,7 +841,6 @@ void ActivePokemon::printEnemyInfo() {
 	if (types[1] != Util::NONE) {
 		cout << Util::getPokeTypeStringFromEnum(types[1]);
 	}
-
 	cout << endl;
 }
 
@@ -869,6 +865,5 @@ void ActivePokemon::printEnemyBasicInfo() {
 	if (types[1] != Util::NONE) {
 		cout << Util::getPokeTypeStringFromEnum(types[1]);
 	}
-
 	cout << endl;
 }

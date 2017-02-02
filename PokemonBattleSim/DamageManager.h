@@ -5,6 +5,8 @@
 
 #include "Util.h"
 #include "Move.h"
+#include "Pokemon.h"
+#include "ActiveMove.h"
 #include "ActivePokemon.h"
 #include "MoveEffectManager.h"
 

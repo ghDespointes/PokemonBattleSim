@@ -4,9 +4,9 @@
 #include <queue>
 
 #include "Util.h"
-#include "Pokemon.h"
 #include "Team.h"
 #include "TurnAction.h"
+#include "ActivePokemon.h"
 #include "DamageManager.h"
 #include "FileReader.h"
 #include "MoveEffectManager.h"
@@ -59,5 +59,8 @@ public:
 
 	//Do any end of turn clean up duties
 	void endTurn();
+
+	//Check if any team has lost all their pokemon
+	bool checkTeamLoss();
 };
 

@@ -63,7 +63,7 @@
 49,Disable,DISABLE,24,0,Normal,Status,100,20,100,0,""
 50,Acid,ACID,25,40,Poison,Special,100,30,10,0,""
 51,Ember,EMBER,4,40,Fire,Special,100,25,10,0,""
-52,Flamethrower,FLAMETHROWER,4,90,Fire,Special,100,15,10,0,""
+52,Flamethrower,FLAMETHROWER,4,900,Fire,Special,100,15,10,0,""
 #
 #Not yet implemented
 #53,Mist,MIST,26,0,Ice,Status,100,30,0,0,""
@@ -110,7 +110,7 @@
 #
 #Ignore Below
 #
-554,Bubble,BUBBLE,5,20,Water,Special,100,30,10,0,"A spray of countless bubbles is jetted at the opposing team. It may also lower the targets' Speed stats."
+554,Bubble,BUBBLE,0,20,Water,Special,100,30,10,0,"A spray of countless bubbles is jetted at the opposing team. It may also lower the targets' Speed stats."
 #Special Moves
 998,ConfusedHit,CONFUSEDHIT,0,40,NONE,Physical,100,0,0,0,""
 999,Struggle,STRUGGLE,0,0,None,Physical,100,0,0,0,""

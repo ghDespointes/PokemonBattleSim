@@ -98,7 +98,7 @@ bool ActionManager::checkInputLegality(vector<string> input, TurnAction *action)
 		//If it's a number, make sure it corresponds to a move the player has
 		else {
 			num = stoi(input[1]);
-			if (num > plrTeam->getActive()->getMoves().size() || num == 0) {
+			if (num > plrTeam->getActive()->getMoves().size() || num <= 0) {
 				cout << "Please pick a valid attack" << endl;
 				return false;
 			}
@@ -331,7 +331,12 @@ TurnAction ActionManager::getPlayerInput() {
 	}
 	//If player wants to ask for help print out help statement
 	else if (inputs[0] == "HELP") {
-		cout << "Here's some help" << endl;
+		cout << endl;
+		cout << "Here's some help:" << endl;
+		cout << "Type \"Use X\" to use an attack, where X is the name or number of that move." << endl;
+		cout << "Type \"Switch X\" to switch to another pokemon, where X is the name or number of that pokemon." << endl;
+		cout << "Type \"Info X\" to see a description of a move, where X is the name or number of that move." << endl;
+		cout << endl;
 
 		return crashAction;
 
@@ -339,7 +344,32 @@ TurnAction ActionManager::getPlayerInput() {
 	//If player wants more information about certain moves or pokemon
 	//Print out that information
 	else if (inputs[0] == "INFO") {
-		cout << "Here's some info about" << endl;
+		inputs[0] = "USE";
+
+		if (checkInputLegality(inputs, outputAction)) {
+			Move move;
+			string param = outputAction->getParam();
+			int paramInt;
+
+			//Allow the user to check the information of their own moves
+			if (isdigit(param[0])) {
+				paramInt = stoi(param);
+				move = Util::getMove(plrTeam->getActive()->getMoves()[paramInt-1].getIntName());
+			}
+			//Make sure the move exists
+			else if (Util::checkMove(param) > 0) {
+				move = Util::getMove(param);
+			}
+			else {
+				cout << "That move doesn't exist, please try again." << endl;
+				return crashAction;
+			}
+
+			cout << endl;
+			cout << "Here's some info about " << move.getName() << ":" <<endl;
+			move.printBattleInfo();
+			cout << endl;
+		}
 
 		return crashAction;
 
@@ -431,8 +461,6 @@ void ActionManager::performSwitch(Util::User user, Team *team, int param) {
 	ActiveMove move;
 	Move moveInfo;
 
-	int hit;
-
 	string identifier;
 
 	if (user == Util::Player_1) {
@@ -447,7 +475,6 @@ void ActionManager::performSwitch(Util::User user, Team *team, int param) {
 	//Reset anything that gets lost on switch
 	active->switchReset();
 
-	cout << endl;
 	cout << identifier << " withdrew " << active->getName() << " and sent out " << team->getTeam()[param].getName() << "." << endl;
 
 	//Switch out the pokemon
@@ -482,6 +509,11 @@ void ActionManager::performAttack(Util::User user, Team *team, Team *otherTeam, 
 	}
 
 	active = team->getActive();
+
+	//Skips are generally reserved for whena pokemon dies before using an attack
+	if (active->decrementVolStatus(Util::Skip)) {
+		return;
+	}
 
 	//Checks for any relevant status conditions, decrements them and reacts accordingly
 	if (active->getStatus() == Util::Asleep) {
@@ -527,11 +559,6 @@ void ActionManager::performAttack(Util::User user, Team *team, Team *otherTeam, 
 		return;
 	}
 
-	//Skips are generally reserved for whena pokemon dies before using an attack
-	if (active->decrementVolStatus(Util::Skip)) {
-		return;
-	}
-
 	//Checks to see if the user flinched and skips their turn
 	if (active->decrementVolStatus(Util::Flinched)) {
 		cout << active->getName() << " flinched!" << endl;
@@ -546,8 +573,6 @@ void ActionManager::performAttack(Util::User user, Team *team, Team *otherTeam, 
 
 			//Calculate the damage of hitting yourself
 			int damageConf = DamageManager::calcConfusion(*active);
-
-			cout << damageConf << endl;
 
 			active->damage(damageConf);
 			return;
@@ -577,7 +602,6 @@ void ActionManager::performAttack(Util::User user, Team *team, Team *otherTeam, 
 	//Store the most recently used move
 	active->setStoredMove(param);
 
-	cout << endl;
 	cout << identifier << active->getName() << " used " << move.getName() << "." << endl;
 
 	//This can be ignored as it's not fully implemented
@@ -686,6 +710,7 @@ void ActionManager::performAction(TurnAction action) {
 		otherTeam = plrTeam;
 	}
 
+	cout << endl;
 	//Either performs a switch or an attack
 	if (actType == Util::Switch) {
 		performSwitch(user, team, paramInt);
@@ -724,6 +749,9 @@ void ActionManager::endTurn() {
 			TurnAction switchAction;
 
 			if (turnOrder[i] == Util::Player_1) {
+				if (!plrTeam->checkIfTeamAlive()) {
+					return;
+				}
 
 				cout << "Your pokemon has fainted, what pokemon will you send out? ";
 				switchAction = getPlayerInput(Util::Switch);
@@ -739,6 +767,9 @@ void ActionManager::endTurn() {
 
 				performAction(switchAction);
 			} else {
+				if (!enemyTeam->checkIfTeamAlive()) {
+					return;
+				}
 				//AI Module decides
 
 			}
@@ -747,12 +778,13 @@ void ActionManager::endTurn() {
 		else if (status == Util::Burned) {
 			active->damagePercent(0.0625);
 			cout << active->getName() << " was hurt by its burn!" << endl;
-
+			cout << endl;
 		}
 		//Deal damage to any poisoned pokemon
 		else if (status == Util::Poisoned) {
 			active->damagePercent(0.125);
 			cout << active->getName() << " was hurt by poison!" << endl;
+			cout << endl;
 		}
 		//Increment poison timer and deal damage to any badly poisoned pokemon
 		//Currently no way of making a pokemon badly poisoned
@@ -760,6 +792,7 @@ void ActionManager::endTurn() {
 			active->incrementPoison();
 			active->damagePercent(active->getPoison()*0.0625);
 			cout << active->getName() << " was hurt by poison!" << endl;
+			cout << endl;
 		}
 	}
 }
@@ -775,10 +808,23 @@ void ActionManager::performActions() {
 
 		performAction(action);
 
-		cout << endl;
-
 		actionQueue.pop();
 	}
 
+	cout << endl;
 	endTurn();
+}
+
+bool ActionManager::checkTeamLoss() {
+	if (!enemyTeam->checkIfTeamAlive()) {
+		cout << "Congratulations! You've won!" << endl;
+		return true;
+	}
+
+	if (!plrTeam->checkIfTeamAlive()) {
+		cout << "All your pokemon have fainted! Try again some other time!" << endl;
+		return true;
+	}
+
+	return false;
 }

@@ -46,7 +46,7 @@ const vector<vector<double>> DamageManager::typeEffectiveness = {
 };
 
 //Takes the attacking type and the defending type
-//Returns the value from typeeffectiveness matrix
+//Returns the value from type effectiveness matrix
 double DamageManager::getEffectiveness(Util::PokeType type1, Util::PokeType type2) {
 	return typeEffectiveness[type1][type2];
 }

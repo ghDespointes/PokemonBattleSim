@@ -6,13 +6,10 @@
 #include <iostream>
 #include <ctime>
 
-#include "Util.h"
-#include "Pokemon.h"
-#include "Move.h"
-#include "ActivePokemon.h"
+#include "Team.h"
 #include "FileReader.h"
-#include "TurnAction.h"
 #include "ActionManager.h"
+#include "TurnAction.h"
 
 using namespace std;
 
@@ -82,15 +79,17 @@ int main(){
 		actionMan.performActions();
 
 		//Check if battle is over
+		//Determine winner and print it out
+		if (actionMan.checkTeamLoss()) {
+			break;
+		}
 
 		//Wait for player input to ensure they see what occured that turn
-		cout << endl;
 		system("pause");
 	}
 
-	//Determine winner and print it out
-
-	//Wait to continue then exit
+	//Wait for player input to ensure they see what occured that turn
+		system("pause");
 
     return 0;
 }

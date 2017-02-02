@@ -13,8 +13,8 @@ Ability: Blaze
 EVs: 252 SpA / 4 Def / 252 Spe
 Timid Nature  
 IVs: 0 Atk
-- Sand Attack
-- Flamethrower
+- Stomp
+- Stun Powder
 - Tail Whip
 - Bite
 

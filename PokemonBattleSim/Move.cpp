@@ -110,3 +110,17 @@ void Move::print() {
 	cout << "Priority: " << priority << endl;
 	cout << "Description: " << description << endl;
 }
+
+//print used to show player information
+void Move::printBattleInfo() {
+	cout << "Name: " << name << endl;
+	cout << "BP: " << BP << endl;
+
+	cout << "Type: " << Util::getPokeTypeStringFromEnum(type) << endl;
+	cout << "Damage Type: " << Util::getMoveTypeStringFromEnum(damType) << endl;
+
+	cout << "Accuracy: " << acc << endl;
+	cout << "PP: " << PP << endl;
+	cout << "Priority: " << priority << endl;
+	cout << "Description: " << description << endl;
+}

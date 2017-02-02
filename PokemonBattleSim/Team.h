@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "Util.h"
 #include "ActivePokemon.h"
 
 //Holds all active pokemon
@@ -28,6 +27,9 @@ public:
 
 	//Return loc of pokemon if exists
 	int findPoke(string name);
+
+	//Check if entire team is fainted
+	bool checkIfTeamAlive();
 
 	//Different types of print
 	void print();
