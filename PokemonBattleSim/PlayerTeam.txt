@@ -26,7 +26,7 @@ IVs: 0 Atk
 - Flamethrower
 - Bubble
 - Tackle
-- Bite
+- Tail Whip
 
 Venusaur @ Black Sludge
 Ability: Overgrow

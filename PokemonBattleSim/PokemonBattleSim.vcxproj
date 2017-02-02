@@ -156,6 +156,7 @@
     <ClInclude Include="ActionManager.h" />
     <ClInclude Include="ActiveMove.h" />
     <ClInclude Include="ActivePokemon.h" />
+    <ClInclude Include="AIManager.h" />
     <ClInclude Include="DamageManager.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="Move.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="ActionManager.cpp" />
     <ClCompile Include="ActiveMove.cpp" />
     <ClCompile Include="ActivePokemon.cpp" />
+    <ClCompile Include="AIManager.cpp" />
     <ClCompile Include="DamageManager.cpp" />
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="Move.cpp" />

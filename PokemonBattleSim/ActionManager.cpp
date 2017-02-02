@@ -7,9 +7,11 @@ ActionManager::ActionManager()
 }
 
 //Set up the teams
-ActionManager::ActionManager(Team *plr, Team *enemy) {
+ActionManager::ActionManager(Team *plr, Team *enemy, AIManager *aiMann) {
 	plrTeam = plr;
 	enemyTeam = enemy;
+
+	aiMan = aiMann;
 
 	//Populate turn order initially
 	turnOrder.push_back(Util::Player_1);
@@ -765,14 +767,15 @@ void ActionManager::endTurn() {
 					cout << endl;
 				}
 
-				performAction(switchAction);
 			} else {
 				if (!enemyTeam->checkIfTeamAlive()) {
 					return;
 				}
 				//AI Module decides
-
+				switchAction = aiMan->determineAction(Util::Switch);
 			}
+
+			performAction(switchAction);
 		}
 		//Deal damage to any burned pokemon
 		else if (status == Util::Burned) {

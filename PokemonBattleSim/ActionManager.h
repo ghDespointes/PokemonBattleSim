@@ -10,12 +10,15 @@
 #include "DamageManager.h"
 #include "FileReader.h"
 #include "MoveEffectManager.h"
+#include "AIManager.h"
 
 class ActionManager
 {
 	//Each team to access freely
 	Team *plrTeam;
 	Team *enemyTeam;
+
+	AIManager* aiMan;
 
 	//Vector keeping track of the turn order of the active pokemon
 	vector<Util::User> turnOrder;
@@ -27,7 +30,7 @@ class ActionManager
 
 public:
 	ActionManager();
-	ActionManager(Team *plr, Team *enemy);
+	ActionManager(Team *plr, Team *enemy, AIManager *aiMann);
 	~ActionManager();
 
 	//Update turn order to keep it up to date

@@ -23,6 +23,8 @@ public:
 	static double getEffectiveness(Util::PokeType type1, Util::PokeType type2);
 	//Calculates full damage modifier of types
 	static double getMoveEffectiveness(Util::PokeType moveType, Pokemon victim);
+	//Calculates the stab value for a certain type and pokemon
+	static double checkStab(Util::PokeType moveType, Pokemon user);
 	//Calculates damage modifier for crit, affectiveness, and random chance
 	static double getModifier(Move move, Pokemon user, Pokemon victim, bool crit);
 	//Calculate the base damage

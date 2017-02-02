@@ -10,6 +10,7 @@
 #include "FileReader.h"
 #include "ActionManager.h"
 #include "TurnAction.h"
+#include "AIManager.h"
 
 using namespace std;
 
@@ -31,7 +32,8 @@ int main(){
 
 	//Initialize ActionManager
 		//Will be in charge of performing any actions the player needs
-	ActionManager actionMan(&plrTeam, &enemyTeam);
+	AIManager aiMan(&enemyTeam, &plrTeam);
+	ActionManager actionMan(&plrTeam, &enemyTeam, &aiMan);
 
 	//Controls whether game status info will be printed for the player
 	bool printInfo = true;
@@ -70,7 +72,9 @@ int main(){
 
 		//Create AI module and have ai decide
 		//Call on AI module to choose most appropriate action
-		enmAction = TurnAction(Util::Enemy_1, Util::Attack, "1");
+		enmAction = aiMan.determineAction(Util::Attack);
+			
+		//TurnAction(Util::Enemy_1, Util::Attack, "1");
 
 		//Determine turn order and populate teh order into a queue
 		actionMan.createActionQueue(plrAction, enmAction);

@@ -48,6 +48,10 @@ const vector<vector<double>> DamageManager::typeEffectiveness = {
 //Takes the attacking type and the defending type
 //Returns the value from type effectiveness matrix
 double DamageManager::getEffectiveness(Util::PokeType type1, Util::PokeType type2) {
+	if (type1 == Util::NONE || type2 == Util::NONE) {
+		return 1;
+	}
+
 	return typeEffectiveness[type1][type2];
 }
 
@@ -66,10 +70,24 @@ double DamageManager::getMoveEffectiveness(Util::PokeType moveType, Pokemon vict
 	return damageMultiplier;
 }
 
+//Takes a poke type and it's user
+//Returns 1.5 if they share a type or 1 otherwise
+double DamageManager::checkStab(Util::PokeType moveType, Pokemon user) {
+	vector<Util::PokeType> types = user.getType();
+
+	for (int i = 0; i < types.size(); i++) {
+		if (types[i] == moveType) {
+			return 1.5;
+		}
+	}
+
+	return 1;
+}
+
 //Takes the move, the user, the defender, and if the move crits
 //Calculates any modifiers
 double DamageManager::getModifier(Move move, Pokemon user, Pokemon victim, bool crit) {
-	double stab = 1;
+	double stab;
 	double critVal = 1;
 	double type = getMoveEffectiveness(move.getType(), victim);
 	//Moves deal anywhere from .85 to 1 of their damage
@@ -93,12 +111,7 @@ double DamageManager::getModifier(Move move, Pokemon user, Pokemon victim, bool 
 	}
 
 	//Moves deal more damage if they share a type with the user
-	vector<Util::PokeType> types = user.getType();
-	for (int i = 0; i < types.size(); i++) {
-		if (types[i] == move.getType()) {
-			stab = 1.5;
-		}
-	}
+	stab = checkStab(move.getType(), user);
 
 	return stab * critVal * type * ran;
 }
