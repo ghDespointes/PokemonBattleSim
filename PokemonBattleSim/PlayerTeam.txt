@@ -8,14 +8,14 @@
 #- MoveName
 #- MoveName
 
-Charizard @ Life Orb
+Charizard
 Ability: Blaze
 EVs: 252 SpA / 4 Def / 252 Spe
 Timid Nature  
 IVs: 0 Atk
-- Seismic Toss
-- Sing
-- Growl
+- Sand Attack
+- Flamethrower
+- Tail Whip
 - Bite
 
 Blastoise @ Leftovers  

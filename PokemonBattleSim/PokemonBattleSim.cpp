@@ -29,37 +29,42 @@ int main(){
 
 	//Set up player and enemy teams
 		//Parse the team files
-
 	Team plrTeam = FileReader::getTeamInfo("PlayerTeam.txt");
 	Team enemyTeam = FileReader::getTeamInfo("EnemyTeam.txt");
 
-
+	//Initialize ActionManager
+		//Will be in charge of performing any actions the player needs
 	ActionManager actionMan(&plrTeam, &enemyTeam);
 
-	cout << "TEST" << endl;
-
+	//Controls whether game status info will be printed for the player
 	bool printInfo = true;
 
+	//Set seed as current time for any randomness we will need
 	srand(time(0));
 
+	//Main game loop 
 	while (true) {
 		string line;
 		vector<string> inputs;
 		TurnAction plrAction;
 		TurnAction enmAction;
 
-		//print out all needed information
+		//Print out all needed information
 		if (printInfo) {
 			enemyTeam.printEnemyInfo();
 			plrTeam.printBattleInfo();
 		}
 
-		//Take inputs
+		//Accept player inputs
 		plrAction = actionMan.getPlayerInput();
 
+		//If the player gives a bad input getPlayerInput will return a null action
+			//and the loop will start over
 		if (plrAction.getParam() == "NONE") {
 			printInfo = false;
 			continue;
+
+		//If the player wants to quit leave the main loop
 		} else if (plrAction.getParam() == "QUIT") {
 			break;
 		}
@@ -67,16 +72,18 @@ int main(){
 		printInfo = true;
 
 		//Create AI module and have ai decide
+		//Call on AI module to choose most appropriate action
 		enmAction = TurnAction(Util::Enemy_1, Util::Attack, "1");
 
-		//Determine turn order using a queue
+		//Determine turn order and populate teh order into a queue
 		actionMan.createActionQueue(plrAction, enmAction);
 
-		//Pop the queue to make things happen
+		//Pop the queue to perform each of the actions in the right order
 		actionMan.performActions();
 
 		//Check if battle is over
 
+		//Wait for player input to ensure they see what occured that turn
 		cout << endl;
 		system("pause");
 	}

@@ -13,8 +13,8 @@ Ability: Torrent
 EVs: 252 Hp / 252 Def / 4 SpD
 Naive Nature  
 IVs: 0 Atk
+- Tail Whip
 - Flamethrower
-- Bubble
 - Tackle
 - Bite
 

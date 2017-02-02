@@ -1,7 +1,6 @@
 #include "ActiveMove.h"
 
-
-
+//Dummy active move
 ActiveMove::ActiveMove() {
 	name = "NONE";
 	internalName = "NONE";
@@ -11,6 +10,7 @@ ActiveMove::ActiveMove() {
 	currPP = maxPP;
 }
 
+//Real constructor
 ActiveMove::ActiveMove(string name) {
 	internalName = name;
 	
@@ -20,6 +20,7 @@ ActiveMove::ActiveMove(string name) {
 
 	ID = move.getID();
 
+	//Max PP is always 1.6* times more than what the game specifies
 	maxPP = 1.6*move.getPP();
 	currPP = maxPP;
 
@@ -28,12 +29,7 @@ ActiveMove::ActiveMove(string name) {
 ActiveMove::~ActiveMove() {
 }
 
-int ActiveMove::useMove() {
-
-
-	return 0;
-}
-
+//Some getters
 string ActiveMove::getName() {
 	return name;
 }
@@ -50,6 +46,7 @@ int ActiveMove::getMaxPP() {
 	return maxPP;
 }
 
+//Getters and setter for PP
 void ActiveMove::setPP(int pp) {
 	currPP = pp;
 }
@@ -58,6 +55,7 @@ int ActiveMove::getPP() {
 	return currPP;
 }
 
+//Debug printing everything
 void ActiveMove::print() {
 	cout << "Name: " << name << endl;
 	cout << "Internal Name: " << internalName << endl;
@@ -71,6 +69,7 @@ void ActiveMove::print() {
 	cout << endl;
 }
 
+//Print to display information for the player
 void ActiveMove::printBattleInfo() {
 	Move move = Util::getMove(internalName);
 

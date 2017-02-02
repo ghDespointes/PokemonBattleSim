@@ -1,10 +1,8 @@
 #include "ActivePokemon.h"
 
 
-
+//Dummy Pokemon
 ActivePokemon::ActivePokemon(){
-	//Dummy Pokemon
-
 	name = "NONE";
 	internalName = "NONE";
 	ID = -1;
@@ -20,7 +18,10 @@ ActivePokemon::ActivePokemon(){
 	volStatus = { 0,0,0,0 };
 }
 
+//Actual Constructor
+//Takes in vector of string fro FileReader to produce a pokemon
 ActivePokemon::ActivePokemon(vector<string> input){
+	//Fairly straightforward of putting values where they belong
 	name = input[Util::ACTIVE_MON_NAME];
 	internalName = input[Util::ACTIVE_MON_INT_NAME];
 
@@ -52,6 +53,7 @@ ActivePokemon::ActivePokemon(vector<string> input){
 	fixEvs();
 	fixIVs();
 
+	//Start with no status conditions
 	status = Util::Standard;
 
 	//Debugging purpses
@@ -63,17 +65,21 @@ ActivePokemon::ActivePokemon(vector<string> input){
 		cout << ivs[i] << endl;
 	}*/
 
+	//Start with 0'd out stats
 	stats = { 0,0,0,0,0,0 };
 
 	//Calculate stats based on level, evs, ivs, and nature
 	calculateStats(pokeInfo);
 	health = stats[0];
 
+	//Start with no modifiers or conditions
 	statBoosts = { 0,0,0,0,0,0,0,0 };
 	volStatus = { 0,0,0,0,0 };
 
+	//Can be ignored for now
 	storedAction = TurnAction(Util::Player_1, Util::Attack, "CHARGE_MOVE");
 
+	//Add between 0-4 moves
 	for (int i = 0; i < 4; i++) {
 		if (Util::ACTIVE_MON_MOVE_LOC + i >= input.size()) {
 			break;
@@ -88,6 +94,11 @@ ActivePokemon::~ActivePokemon(){
 
 }
 
+//Make sure the total cap of 510 isn't exceeded
+//make sure the individual cap of 252 isn't exceeded either
+
+//If any goes over it'll be taken into account and corrected
+//Excess points are ignored
 void ActivePokemon::fixEvs() {
 	int total = 0;
 
@@ -115,6 +126,7 @@ void ActivePokemon::fixEvs() {
 	}
 }
 
+//Simply checks if between 0-31 and clamps it
 void ActivePokemon::fixIVs() {
 	for (int i = 0; i < evs.size(); i++) {
 		if (ivs[i] > 31) {
@@ -125,6 +137,7 @@ void ActivePokemon::fixIVs() {
 	}
 }
 
+//Following a formula from the pokemon games the stats are calculated
 void ActivePokemon::calculateStats(Pokemon pokeInfo) {
 	for (int i = 0; i < 6; i++) {
 		int base = pokeInfo.getStat(Util::StatType(i));
@@ -134,6 +147,7 @@ void ActivePokemon::calculateStats(Pokemon pokeInfo) {
 
 		int addition = 5;
 		
+		//HP is calculated different than the others
 		if (i == 0) {
 			addition = lvl + 10;
 		} 
@@ -141,6 +155,7 @@ void ActivePokemon::calculateStats(Pokemon pokeInfo) {
 		stats[i] = statCalc + addition;
 	}
 
+	//Have the nature increase or decrease the correspnding stats by 10%
 	vector<double> natureAffect = Util::getNatureFromString(nature);
 
 	for (int i = 0; i < natureAffect.size(); i++) {
@@ -153,86 +168,86 @@ void ActivePokemon::calculateStats(Pokemon pokeInfo) {
 	}*/
 }
 
+//Get name
 string ActivePokemon::getName() {
 	return name;
 }
 
+//Get internal Name
 string ActivePokemon::getIntName() {
 	return internalName;
 }
 
+//Get ID
 int ActivePokemon::getID() {
 	return ID;
 }
 
+//Get level
 int ActivePokemon::getLevel() {
 	return lvl;
 }
 
+
+//Get item Name
 string ActivePokemon::getItem() {
 	return item;
 }
 
+//Takes in a stat type
+//Returns the stat of that type
 int ActivePokemon::getStat(Util::StatType stat) {
 	return stats[stat];
 }
 
+//Takes in a stat type
+//Returns the EV for that stat
 int ActivePokemon::getEV(Util::StatType stat) {
 	return evs[stat];
 }
 
+//Takes in a stat type
+//Returns the IV for that stat
 int ActivePokemon::getIV(Util::StatType stat) {
 	return ivs[stat];
 }
 
+//Takes a type
+//Return true if the pokemon is that type
+bool ActivePokemon::isType(Util::PokeType type) {
+	vector<Util::PokeType> types = Util::getPoke(internalName).getType();
+
+	for (int i = 0; i < types.size(); i++) {
+		if (types[i] == type) {
+			return true;
+		}
+	}
+	return false;
+}
+
+//Resets any value when a switch occurs
 void ActivePokemon::switchReset() {
 	resetStatBoost();
 	resetVolStatus();
 	storedAction = TurnAction();
+	setStoredMove(-1);
+	setStoredDamage(0);
 }
 
+//Takes statBoost type
+//Returns double modifier
+//Stat boosts are split into three kinds
+	//Main Stats (HP, Attack, Defense, SpAttack, SpDefense, Speed)
+	//Evasion Stats (Accureacy, Evasion)
+	//Critical Hit Chance
+//Each is different depending on level
 double ActivePokemon::getStatBoost(Util::StatBoost stat) {
+	//Evasion and Accuracy are added together later so return the number and calculate it later
 	if (stat == Util::AccBoost || stat == Util::EvasionBoost) {
-		if (statBoosts[stat] == -6) {
-			return 3.0/9.0;
-		}
-		else if (statBoosts[stat] == -5) {
-			return 3.0/8.0;
-		}
-		else if (statBoosts[stat] == -4) {
-			return 3.0/7.0;
-		}
-		else if (statBoosts[stat] == -3) {
-			return 3.0/6.0;
-		}
-		else if (statBoosts[stat] == -2) {
-			return 3.0/5.0;
-		}
-		else if (statBoosts[stat] == -1) {
-			return 3.0/4.0;
-		}
-		else if (statBoosts[stat] == 0) {
-			return 1;
-		}
-		else if (statBoosts[stat] == 1) {
-			return 4.0/3.0;
-		}
-		else if (statBoosts[stat] == 2) {
-			return 5.0/3.0;
-		}
-		else if (statBoosts[stat] == 3) {
-			return 2;
-		}
-		else if (statBoosts[stat] == 4) {
-			return 7.0/3.0;
-		}
-		else if (statBoosts[stat] == 5) {
-			return 8.0/3.0;
-		}
-		else if (statBoosts[stat] == 6) {
-			return 3;
-		}
+		return statBoosts[stat];
+	
 	}
+	//Crit chance ranges from 1/16 - 100%
 	else if (stat == Util::CritBoost) {
 		if (statBoosts[stat] <= 0) {
 			return 1.0/16.0;
@@ -247,6 +262,7 @@ double ActivePokemon::getStatBoost(Util::StatBoost stat) {
 			return 1;
 		}
 	}
+	//Main stats range from 1/4 - 4
 	else {
 		if (statBoosts[stat] == -6) {
 			return 2.0 / 8.0;
@@ -290,13 +306,62 @@ double ActivePokemon::getStatBoost(Util::StatBoost stat) {
 	}
 }
 
+//Takes acuracy - evasion
+//Returns final accuracy as a double
+double ActivePokemon::calculateAccuracy(int level) {
+	if (level <= -6) {
+		return 3.0 / 9.0;
+	}
+	else if (level == -5) {
+		return 3.0 / 8.0;
+	}
+	else if (level == -4) {
+		return 3.0 / 7.0;
+	}
+	else if (level == -3) {
+		return 3.0 / 6.0;
+	}
+	else if (level == -2) {
+		return 3.0 / 5.0;
+	}
+	else if (level == -1) {
+		return 3.0 / 4.0;
+	}
+	else if (level == 0) {
+		return 1;
+	}
+	else if (level == 1) {
+		return 4.0 / 3.0;
+	}
+	else if (level == 2) {
+		return 5.0 / 3.0;
+	}
+	else if (level == 3) {
+		return 2;
+	}
+	else if (level == 4) {
+		return 7.0 / 3.0;
+	}
+	else if (level == 5) {
+		return 8.0 / 3.0;
+	}
+	else if (level >= 6) {
+		return 3;
+	}
+
+	return 1;
+}
+
+//Takes statBoost type and ammount of change
+//StatBoosts generally range from -6 - 6
+	//Crit chance ranges from 0 - 6
 void ActivePokemon::changeStatBoost(Util::StatBoost stat, int quant) {
-	if (statBoosts[stat] == 6) {
+	if (statBoosts[stat] == 6 && quant > 0) {
 		cout << name << "'s STAT " << "won't increase anymore" << endl;
 
 		return;
 	}
-	else if (statBoosts[stat] == -6) {
+	else if (statBoosts[stat] == -6 && quant < 0) {
 		cout << name << "'s STAT " << "won't decrease anymore" << endl;
 
 		return;
@@ -311,44 +376,53 @@ void ActivePokemon::changeStatBoost(Util::StatBoost stat, int quant) {
 		statBoosts[stat] = -6;
 	}
 
+	cout << name << "'s " << Util::getStatBoostStringFromEnum(stat);
+
 	if (quant == 3) {
-		cout << name << "'s STAT "<< "rose drastically!" << endl;
+		cout << " rose drastically!" << endl;
 	}
 	else if (quant == 2) {
-		cout << name << "'s STAT " << "sharply rose!" << endl;
+		cout << " sharply rose!" << endl;
 	}
 	else if (quant == 1) {
-		cout << name << "'s STAT " << "rose!" << endl;
+		cout << " rose!" << endl;
 	}
 	else if (quant == -1) {
-		cout << name << "'s STAT " << "fell!" << endl;
+		cout << " fell!" << endl;
 	}
 	else if (quant == -2) {
-		cout << name << "'s STAT " << "sharply fell!" << endl;
+		cout << " sharply fell!" << endl;
 	}
 	else if (quant == -3) {
-		cout << name << "'s STAT " << "severly fell!" << endl;
+		cout << " severly fell!" << endl;
 	}
 }
 
+//Returns stat modifiers back to 0
 void ActivePokemon::resetStatBoost() {
 	for (int i = 0; i < statBoosts.size(); i++) {
 		statBoosts[i] = 0;
 	}
 }
 
+//Returns current health
 int ActivePokemon::getHealth() {
 	return health;
 }
 
+//Sets current health
 void ActivePokemon::setHealth(int newhealth) {
 	health = newhealth;
 }
 
+//Takes double of percentage of macHealth
+//deals damage equal to a percentage of maxHealth
 void ActivePokemon::damagePercent(double percent) {
 	damage(stats[0]*percent);
 }
 
+//Takes damage ammount
+//Deals that much damage and clamps the health above 0
 void ActivePokemon::damage(int ammount) {
 	health -= ammount;
 
@@ -363,10 +437,14 @@ void ActivePokemon::damage(int ammount) {
 	}
 }
 
+//Takes double of percentage of macHealth
+//heals equal to a percentage of maxHealth
 void ActivePokemon::healPercent(double percent) {
 	heal(stats[0]*percent);
 }
 
+//Takes heal ammount
+//Heals that much and clamps the health below maxHealth
 void ActivePokemon::heal(int ammount) {
 	health += ammount;
 
@@ -375,6 +453,9 @@ void ActivePokemon::heal(int ammount) {
 	}
 }
 
+//Takes status condition
+//Sets pokemon status
+	//If put to sleep pokemon's sleep timer is reset
 void ActivePokemon::setStatus(Util::StatusCond newStatus) {
 	status = newStatus;
 
@@ -383,30 +464,43 @@ void ActivePokemon::setStatus(Util::StatusCond newStatus) {
 	}
 }
 
+//Returns status
 Util::StatusCond ActivePokemon::getStatus() {
 	return status;
 }
 
+//Takes volatile Status
+//Sets that volatile stat
+	//Number depends on how many turns it lasts
 void ActivePokemon::setVolStatus(Util::VolStatus volStat) {
+	//Bound status isn't implemented, but will last between 4-5 turns
 	if (volStat == Util::Bound) {
 		volStatus[volStat]  = rand() % 2 + 4;
 	}
+	//Confusion lasts between 1-4 turns
 	else if (volStat == Util::Confused) {
 		volStatus[volStat] = rand() % 4 + 1;
 	}
+	//Other volatile status conditions are bools
 	else {
 		volStatus[volStat] = 1;
 	}
 }
 
+//Takes volatile stat type
+//Decrements the value and returns true if its still has that status
+	//returns false if cured or not afflicted
 bool ActivePokemon::decrementVolStatus(Util::VolStatus volStat) {
 	volStatus[volStat]--;
 
+	//Clamp it to positive numbers
+		//This implies they weren't afflicted so return false;
 	if (volStatus[volStat] < 0) {
 		volStatus[volStat] = 0;
 
 		return false;
 	}
+	// When cured of status, state it
 	else if (volStatus[volStat] == 0 && volStat == Util::Confused) {
 		cout << endl;
 		cout << name << " snapped out of its confusion!" << endl;
@@ -417,16 +511,20 @@ bool ActivePokemon::decrementVolStatus(Util::VolStatus volStat) {
 	return true;
 }
 
+//Takes volatile status type
+//returns current value for that type
 int ActivePokemon::getVolStatus(Util::VolStatus volStat) {
 	return volStatus[volStat];
 }
 
+//Resets all volatile statuses to 0
 void ActivePokemon::resetVolStatus() {
 	for (int i = 0; i < volStatus.size(); i++) {
 		volStatus[i] = 0;
 	}
 }
 
+//Increase poison counter by one clamping it at 15
 void ActivePokemon::incrementPoison() {
 	poisonTimer++;
 
@@ -435,16 +533,22 @@ void ActivePokemon::incrementPoison() {
 	}
 }
 
+//Reset Poison
 void ActivePokemon::resetPoison() {
 	poisonTimer = 0;
 }
 
+//Return poison counter
 int ActivePokemon::getPoison() {
 	return poisonTimer;
 }
 
+//Decrease sleep timer
+//Return true awoken
+//return false if still asleep
 bool ActivePokemon::decrementSleep() {
 	sleepTimer--;
+	cout << sleepTimer << endl;
 
 	if (sleepTimer <= 0) {
 		sleepTimer = 0;
@@ -456,75 +560,113 @@ bool ActivePokemon::decrementSleep() {
 	return false;
 }
 
+//Set sleep to last between 1-3 turns
 void ActivePokemon::resetSleep() {
 	sleepTimer = (rand() % 3) + 1;
+	cout << sleepTimer;
 }
 
+//Return sleep timer
 int ActivePokemon::getSleep() {
 	return sleepTimer;
 }
 
+//
+//
+//
+//Following not being used
+//
+//
+//
+
+//Returns state of charging move
 bool ActivePokemon::getCharge() {
 	return chargingMove;
 }
 
+//Return fly Flag
 bool ActivePokemon::getFly() {
 	return isFly;
 }
 
+//Returns dig Flag
 bool ActivePokemon::getDig() {
 	return isDig;
 }
 
+//Returns stored action
 TurnAction ActivePokemon::getStoredAction() {
 	return storedAction;
 }
 
+//Sets chargeMove flag
 void ActivePokemon::setCharge(bool input) {
 	chargingMove = input;
 }
 
+//Sets fly flag
 void ActivePokemon::setFly(bool input) {
 	isFly = input;
 }
 
+//sets dig flag
 void ActivePokemon::setDig(bool input) {
 	isDig = input;
 }
 
+//Sets stored Action to input action
 void ActivePokemon::setStoredAction(TurnAction action) {
 	storedAction = action;
 }
 
+//Resets stored action to a null state
 void ActivePokemon::resetStoredAction() {
 	storedAction = storedAction = TurnAction(Util::Player_1, Util::Attack, "CHARGE_MOVE");
 }
 
+//
+//
+//
+//Above not being used
+//
+//
+//
+
+//set stored move
 void ActivePokemon::setStoredMove(int move) {
 	storedMove = move;
 }
 
+//Return stored move
 int ActivePokemon::getStoredMove() {
 	return storedMove;
 }
 
+//Set stored damage
 void ActivePokemon::setStoredDamage(int dam) {
 	storedDamage = dam;
 }
 
+//Get stored damage
 int ActivePokemon::getStoredDamage() {
 	return storedDamage;
 }
 
+//Set disabled move
+//start disable timer
 void ActivePokemon::setDisable(int move) {
 	disabledMove = move;
 	disableTimer = 5;
 }
 
+//Return disabled move
 int ActivePokemon::getDisableMove() {
 	return disabledMove;
 }
 
+//Decrement disabled timer
+//Returns true if still disabled
+	//return false if cured or not disabled
 bool ActivePokemon::decrementDisableTimer() {
 	disableTimer--;
 
@@ -542,6 +684,9 @@ bool ActivePokemon::decrementDisableTimer() {
 	return true;
 }
 
+//Take move name
+//Return location of that move
+	//Returns -1 if it doesn't exist
 int ActivePokemon::findMove(string name) {
 	for (int i = 0; i < moves.size(); i++) {
 		if (moves[i].getIntName() == name) {
@@ -552,10 +697,12 @@ int ActivePokemon::findMove(string name) {
 	return -1;
 }
 
+//Return vector of moves
 vector<ActiveMove> ActivePokemon::getMoves() {
 	return moves;
 }
 
+//Debug print
 void ActivePokemon::print() {
 	cout << "Name: " << name << endl;
 	cout << "Internal Name: " << internalName << endl;
@@ -604,6 +751,8 @@ void ActivePokemon::print() {
 	}
 }
 
+//Print used when pokemon is active
+	//Provides most information
 void ActivePokemon::printBattleInfo() {
 	double calcHealth = (int)((double)(health * 1000) / (double)getStat(Util::HP));
 	string statusCond = Util::getStatusStringFromEnum(status);
@@ -641,6 +790,7 @@ void ActivePokemon::printBattleInfo() {
 	}
 }
 
+//Print used for pokemon still in party
 void ActivePokemon::printBasicInfo() {
 	double calcHealth = (int)((double)(health * 1000) / (double)getStat(Util::HP));
 	string statusCond = Util::getStatusStringFromEnum(status);
@@ -673,7 +823,7 @@ void ActivePokemon::printBasicInfo() {
 	cout << endl;
 }
 
-//Show knowledge gained by player (Likes moves)
+//Print enemy active pokemon information
 void ActivePokemon::printEnemyInfo() {
 	double calcHealth = (int)((double)(health * 1000) / (double)getStat(Util::HP));
 	string statusCond = Util::getStatusStringFromEnum(status);
@@ -698,6 +848,7 @@ void ActivePokemon::printEnemyInfo() {
 	cout << endl;
 }
 
+//print enemy team information
 void ActivePokemon::printEnemyBasicInfo() {
 	double calcHealth = (int)((double)(health * 1000) / (double)getStat(Util::HP));
 	string statusCond = Util::getStatusStringFromEnum(status);

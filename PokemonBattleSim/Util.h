@@ -13,6 +13,7 @@ using namespace std;
 class Util{
 public:
 
+	//Simple enum to keep track of all the stats pokemon can have
 	enum StatType {
 		HP = 0,
 		Att = 1,
@@ -22,6 +23,7 @@ public:
 		Speed = 5
 	};
 
+	//Simple enum to keep track of any stat modifiers pokemon can acquire
 	enum StatBoost {
 		AttBoost = 0,
 		DefBoost = 1,
@@ -33,6 +35,7 @@ public:
 		EvasionBoost = 7,
 	};
 
+	//Enum describing each pokemon type and a 19th NULL type for a typeless interactions
 	enum PokeType {
 		Normal = 0,
 		Fighting = 1,
@@ -55,18 +58,25 @@ public:
 		NONE = 18
 	};
 
+	//Enum describing the 3 types of moves
 	enum MoveType {
 		Physical,
 		Special,
 		Status
 	};
 
+	//Enum describing the 2 main actions and Other used as a catch all
+		//for any bad actions
 	enum Action {
 		Switch,
 		Attack,
 		Other
 	};
 
+	//Enum describing the users and locations of pokemon
+		//Player_2 and Enemy_2 can be ignored
+		//In the future it can be implmented for 2v2 battles
+		//but those aren't currently implemented
 	enum User {
 		Player_1 = 0,
 		Enemy_1 = 1,
@@ -74,6 +84,7 @@ public:
 		Enemy_2 = 3
 	};
 
+	//Enum describing any permanent status condition that persists
 	enum StatusCond {
 		Standard,
 		Fainted,
@@ -85,6 +96,7 @@ public:
 		Badly_Poisoned
 	};
 
+	//Enum describing any volatile status condition that is lost on switch
 	enum VolStatus {
 		Confused = 0,
 		Bound = 1,
@@ -158,15 +170,17 @@ public:
 
 	static const int ACTIVE_MON_MOVE_LOC = 18;
 
-	//Natures
+	//Natures affect on stats
 	static const double NATURE_STANDARD;
 	static const double NATURE_INCREASE;
 	static const double NATURE_DECREASE;
 
-	//
+	//Returns information about moves and pokemon
 	static Move getMove(string intName);
 	static Pokemon getPoke(string intName);
 
+	//Convert between enums and string
+		//Used when parsing and printing information to the player
 	static string getPokeTypeStringFromEnum(PokeType type);
 	static PokeType getPokeTypeEnumFromString(string type);
 
@@ -177,7 +191,6 @@ public:
 
 	static string getStatusStringFromEnum(Util::StatusCond status);
 
-	Util();
-	~Util();
+	static string getStatBoostStringFromEnum(Util::StatBoost stat);
 };
 

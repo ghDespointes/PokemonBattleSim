@@ -3,25 +3,31 @@
 #include "Move.h"
 #include "Pokemon.h"
 
+//Set the location of main move and pokemon files
 const string Util::POKE_DEF_LOC = "Pokemon.txt";
 const string Util::MOVE_DEF_LOC = "Moves.txt";
 
+//Set nature effects on stats
 const double Util::NATURE_STANDARD = 1.0;
 const double Util::NATURE_INCREASE = 1.1;
 const double Util::NATURE_DECREASE = .9;
 
 //Sets up all the pokemon and move Data that we can refer to
+	//Maps allow for fast look up
 const unordered_map<string, Move> Util::moveHash = FileReader::getMoveInfo();
 const unordered_map<string, Pokemon> Util::pokeHash = FileReader::getPokeInfo();
 
+//Returns the move based on its name
 Move Util::getMove(string intName) {
 	return moveHash.at(intName);
 }
 
+//Returns the pokemon based on its name
 Pokemon Util::getPoke(string intName) {
 	return pokeHash.at(intName);
 }
 
+//Returns the correct corresponding type as a string
 string Util::getPokeTypeStringFromEnum(PokeType type) {
 	switch (type) {
 	case Util::Normal: return "Normal";
@@ -48,6 +54,7 @@ string Util::getPokeTypeStringFromEnum(PokeType type) {
 	}
 }
 
+//Returns the correct corresponding type as an enum
 Util::PokeType Util::getPokeTypeEnumFromString(string type) {
 	if (type == "Normal") {
 		return Util::Normal;
@@ -89,6 +96,8 @@ Util::PokeType Util::getPokeTypeEnumFromString(string type) {
 	return Util::NONE;
 }
 
+
+//Returns the correct corresponding move type as a string
 string Util::getMoveTypeStringFromEnum(MoveType type) {
 	switch (type) {
 	case Util::Physical: return "Physical";
@@ -99,6 +108,7 @@ string Util::getMoveTypeStringFromEnum(MoveType type) {
 	}
 }
 
+//Returns the correct corresponding move type as an enum
 Util::MoveType Util::getMoveTypeEnumFromString(string type) {
 	if (type == "Physical") {
 		return Util::Physical;
@@ -110,6 +120,7 @@ Util::MoveType Util::getMoveTypeEnumFromString(string type) {
 	return Util::Status;
 }
 
+//Returns a vector corresponding to the effect of natures on each stat
 vector<double> Util::getNatureFromString(string nature) {
 	vector<double> changes;
 
@@ -211,6 +222,7 @@ vector<double> Util::getNatureFromString(string nature) {
 	return changes;
 }
 
+//Returns the correct corresponding status condution as a string
 string Util::getStatusStringFromEnum(Util::StatusCond status) {
 	if (status == Util::Standard) {
 		return "Normal";
@@ -240,11 +252,30 @@ string Util::getStatusStringFromEnum(Util::StatusCond status) {
 	return "Normal";
 }
 
-Util::Util()
-{
+string Util::getStatBoostStringFromEnum(Util::StatBoost stat) {
+	if (stat == Util::AttBoost) {
+		return "attack";
+	} 
+	else if (stat == Util::DefBoost) {
+		return "defense";
+	}
+	else if (stat == Util::SpAttBoost) {
+		return "special attack";
+	}
+	else if (stat == Util::SpDefBoost) {
+		return "special defense";
+	}
+	else if (stat == Util::SpeedBoost) {
+		return "speed";
+	}
+	else if (stat == Util::AccBoost) {
+		return "accuracy";
+	}
+	else if (stat == Util::EvasionBoost) {
+		return "evasion";
+	}
+	else if (stat == Util::CritBoost) {
+		return "critical hit chance";
+	}
 }
 
-
-Util::~Util()
-{
-}

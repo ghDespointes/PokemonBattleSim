@@ -1,6 +1,6 @@
 #include "Move.h"
 
-//Dummy Move
+//Dummy Move, just in case
 Move::Move(){
 	ID = -1;
 	name = "NULL";
@@ -17,7 +17,10 @@ Move::Move(){
 	description = "DUMMY";
 }
 
+//Actual Move cronstructor
+	//Reads in a split up line from the Moves.txt file
 Move::Move(vector<string> input) {
+	//Convert anything to an int if its needed as a number
 	ID = stoi(input[Util::MOVE_ID]);
 	name = input[Util::MOVE_NAME];
 	internalName = input[Util::MOVE_INT_NAME];
@@ -40,6 +43,7 @@ Move::Move(vector<string> input) {
 Move::~Move(){
 }
 
+//All the getters for the move's data
 int Move::getID() {
 	return ID;
 }
@@ -88,6 +92,7 @@ string Move::getDescription() {
 	return description;
 }
 
+//print used to debug any issues
 void Move::print() {
 	cout << "Name: " << name << endl;
 	cout << "Internal Name: " << internalName << endl;

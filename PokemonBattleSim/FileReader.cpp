@@ -1,25 +1,20 @@
 #include "FileReader.h"
 
-FileReader::FileReader()
-{
-}
-
-
-FileReader::~FileReader()
-{
-}
-
+//Takes a string and delimiter
+//Returns a vector<string> of each piece leaving things in quotes as a single piece
 vector<string> FileReader::split(string line, char delimiter) {
 	stringstream ss(line);
 	string token;
 	vector<string> splitString;
 
+	//Parses through and grabs pieces of the string based on delimieter
 	while (getline(ss, token, delimiter)) {
+
+		//If a " is encountered put the pieces back together to leave it as a whole line
 		if (token.find('"') <= token.size()) {
 			string temp;
 
 			while (getline(ss, temp, delimiter)) {
-				//To Do: Change to Delimiter
 				token = token + delimiter +temp;
 			}
 		}
@@ -30,13 +25,25 @@ vector<string> FileReader::split(string line, char delimiter) {
 	return splitString;
 }
 
+//Takes a string
+//Returns the string without spaces in front and behind
 string FileReader::trim(string line){
-	int frontSpace = line.find_first_not_of(" ");
-	int endSpace = line.find_last_not_of(" ") + 1;
+	int frontSpace;
+	int endSpace;
 
-	return line.substr(frontSpace, endSpace - frontSpace);
+	frontSpace = line.find_first_not_of(" ");
+	endSpace = line.find_last_not_of(" ");
+
+	//If its all spaces just return an empty string
+	if (endSpace == string::npos) {
+		return "";
+	}
+
+	return line.substr(frontSpace, endSpace + 1 - frontSpace);
 }
 
+//Takes a string
+//Returns the string in all caps and without spaces
 string FileReader::formatName(string line) {
 	transform(line.begin(), line.end(), line.begin(), ::toupper);
 	line.erase(remove(line.begin(), line.end(), ' '), line.end());
@@ -44,6 +51,7 @@ string FileReader::formatName(string line) {
 	return line;
 }
 
+//Parses Move file and returns a map of all the moves read
 unordered_map<string, Move> FileReader::getMoveInfo() {
 	ifstream moveFile(Util::MOVE_DEF_LOC);
 
@@ -51,7 +59,9 @@ unordered_map<string, Move> FileReader::getMoveInfo() {
 
 	unordered_map<string, Move> moveHash;
 
+	//Pass through each line of moves
 	while (getline(moveFile, line)) {
+		//Ignore any line starting in #
 		if (line[0] != '#') {
 			vector<string> moveInfo = split(line, ',');
 
@@ -61,6 +71,8 @@ unordered_map<string, Move> FileReader::getMoveInfo() {
 
 			cout << endl;*/
 
+			//Split the line and create a move from it
+				//Add the newMove to the final map
 			Move newMove(moveInfo);
 			moveHash.emplace(moveInfo[Util::MOVE_INT_NAME], newMove);
 		}
@@ -71,6 +83,7 @@ unordered_map<string, Move> FileReader::getMoveInfo() {
 	return moveHash;
 }
 
+//Parses Pokemon file and returns a map of all the Pokemon read
 unordered_map<string, Pokemon> FileReader::getPokeInfo() {
 	ifstream pokeFile(Util::POKE_DEF_LOC);
 
@@ -80,25 +93,31 @@ unordered_map<string, Pokemon> FileReader::getPokeInfo() {
 
 	int i = 0;
 
+	//Read each line until you find the start of a pokemon, a [#]
 	while (getline(pokeFile, line)) {
 		if (line[0] == '[') {
 			vector<string> pokeInfo;
 
 			line = trim(line);
 
+			//Add the ID to the Pokemon input vector
 			pokeInfo.push_back(line.substr(1, line.find("]",1) - 1));
 
+			//Keep reading lines to find out more information about the pokemon
+				//Stop when a space is found
 			while (getline(pokeFile, line)) {
 				if (line == "") { break; }
 
 				line = trim(line);
 
+				//If name is found, add the name
 				if (line.substr(0, 5) == "Name=") {
 					line = line.substr(5);
 
 					pokeInfo.push_back(line);
 					pokeInfo.push_back(formatName(line));
 
+				//If type is found, add each type to the vector
 				} else if (line.substr(0, 5) == "Type=") {
 					line = line.substr(5);
 
@@ -106,6 +125,7 @@ unordered_map<string, Pokemon> FileReader::getPokeInfo() {
 
 					pokeInfo.push_back(types[0]);
 
+					//If there is no second type add an empty space to represent no type
 					if (types.size() == 1) {
 						pokeInfo.push_back("");
 
@@ -114,6 +134,7 @@ unordered_map<string, Pokemon> FileReader::getPokeInfo() {
 					}
 
 				}
+				//If BaseStats is found, pass each stat to the vector
 				else if (line.substr(0, 10) == "BaseStats=") {
 					line = line.substr(10);
 
@@ -124,6 +145,7 @@ unordered_map<string, Pokemon> FileReader::getPokeInfo() {
 					}
 
 				}
+				//If Moves is found, read each move and add it to the final output vector
 				else if (line.substr(0, 6) == "Moves=") {
 					line = line.substr(6);
 
@@ -143,6 +165,7 @@ unordered_map<string, Pokemon> FileReader::getPokeInfo() {
 
 			cout << endl;*/
 
+			//With the final vector create a new pokemon and insert it to the map
 			Pokemon newPoke(pokeInfo);
 
 			pokeHash.emplace(pokeInfo[Util::POKE_INT_NAME], newPoke);
@@ -153,6 +176,7 @@ unordered_map<string, Pokemon> FileReader::getPokeInfo() {
 	return pokeHash;
 }
 
+//Parses Team file and returns a Team for the file read
 Team FileReader::getTeamInfo(string loc) {
 	ifstream teamFile(loc);
 
@@ -160,40 +184,63 @@ Team FileReader::getTeamInfo(string loc) {
 
 	vector<ActivePokemon> activePokes;
 
+	//Read each line and ignore lines that are empty or start with #
 	while (getline(teamFile, line)) {
 		if (line[0] != '#' && line != "") {
-			vector<string> activeMonInfo;
-			
-			vector<string> data = split(line, '@');
-
-			data[0] = trim(data[0]);
-			data[1] = trim(data[1]);
-
-
 			//Format
 			//Name, IntName, Item, Level, AbilityName, EVs {}, Nature, IVs {}, Moves{}
-			activeMonInfo.push_back(data[0]);
-			activeMonInfo.push_back(formatName(data[0]));
-			activeMonInfo.push_back(data[1]);
+			vector<string> activeMonInfo;
+			vector<string> itemNamePair;
+			string pokeName;
+			string itemName;
 
+			//If an item exists,
+			//Split the first line into Name and item
+			//Note Items are not implemented currently
+			int itemLoc = line.find("@");
+
+			if (itemLoc != string::npos) {
+				itemNamePair = split(line, '@');
+
+				pokeName = trim(itemNamePair[0]);
+
+				if (itemNamePair.size() < 2) {
+					itemName = "";
+				}
+				else {
+					itemName = trim(itemNamePair[1]);
+				}
+			}
+			else {
+				pokeName = trim(line);
+				itemName = "";
+			}
+
+			//Add the name, internal Name, and item into the vector
+			activeMonInfo.push_back(pokeName);
+			activeMonInfo.push_back(formatName(pokeName));
+			activeMonInfo.push_back(itemName);
+
+			//The level default is level 100
 			activeMonInfo.push_back("100");
 
+			//Set up all the other parts of a pokemon in a team with defaults
 			string abilityName;
 			vector<string> evCleaned = { "0","0","0","0","0","0" };
 			string nature;
 			vector<string> ivCleaned = { "31","31","31","31","31","31" };
 			vector<string> moves;
 
-			//Clean this up so that it doen't break when the line is too short
+			//Read the rest of the pokemon and stop when a space is found
 			while (getline(teamFile, line)) {
 				if (line == "") { break; }
 
 				line = trim(line);
 
-				//cout << line << endl;
-
 				int lineSize = line.size();
 
+				//Set ability if it is found
+					//Note abilities are not implmented
 				if (line.substr(0, 8) == "Ability:") {
 					if (lineSize <= 8) {
 						cout << "No ability was entered, so we'll use a random one" << endl;
@@ -204,8 +251,10 @@ Team FileReader::getTeamInfo(string loc) {
 					line = trim(line);
 
 					abilityName = formatName(line);
-
-				} else if (line.substr(0, 4) == "EVs:") {
+				} 
+				//If Evs is found, parse the line to discover what value is applied for each stat
+				else if (line.substr(0, 4) == "EVs:") {
+					//If its left blank tell the player
 					if (lineSize <= 4){
 						cout << "No EVs were stated so they're set to 0" << endl;
 						continue;
@@ -216,38 +265,43 @@ Team FileReader::getTeamInfo(string loc) {
 
 					vector<string> evs = split(line, '/');
 
+					//Look through and see what Evs are mentioned and what values apply to them
 					for (int i = 0; i < evs.size(); i++) {
 						evs[i] = trim(evs[i]);
 
 						int loc;
 
-						if ((loc = evs[i].find("Hp")) <= evs[i].size()) {
+						if ((loc = evs[i].find("Hp")) != string::npos) {
 							evCleaned[0] = trim(evs[i].substr(0, loc));
 
-						} else if ((loc = evs[i].find("Atk")) <= evs[i].size()) {
+						} else if ((loc = evs[i].find("Atk")) != string::npos) {
 							evCleaned[1] = trim(evs[i].substr(0, loc));
 
-						} else if ((loc = evs[i].find("Def")) <= evs[i].size()) {
+						} else if ((loc = evs[i].find("Def")) != string::npos) {
 							evCleaned[2] = trim(evs[i].substr(0, loc));
 
-						} else if ((loc = evs[i].find("SpA")) <= evs[i].size()) {
+						} else if ((loc = evs[i].find("SpA")) != string::npos) {
 							evCleaned[3] = trim(evs[i].substr(0, loc));
 
-						} else if ((loc = evs[i].find("SpD")) <= evs[i].size()) {
+						} else if ((loc = evs[i].find("SpD")) != string::npos) {
 							evCleaned[4] = trim(evs[i].substr(0, loc));
 
-						} else if ((loc = evs[i].find("Spe")) <= evs[i].size()) {
+						} else if ((loc = evs[i].find("Spe")) != string::npos) {
 							evCleaned[5] = trim(evs[i].substr(0, loc));
 						}
 					}
-					
-				} else if (line.substr(lineSize >= 6 ? lineSize - 6 : 0) == "Nature") {
+				} 
+				//If nature is found store it
+				//Its convoluted because moves may have the word nature in their names
+				else if (line.substr(lineSize >= 6 ? lineSize - 6 : 0) == "Nature") {
 					line = line.substr(0, line.find("Nature"));
 					line = trim(line);
 
 					nature = line;
-
-				} else if (line.substr(0, 4) == "IVs:") {
+				} 
+				//If Ivs is found, parse the line to discover what value is applied for each stat
+				else if (line.substr(0, 4) == "IVs:") {
+					//If its left blank tell the player
 					if (lineSize <= 4) {
 						cout << "No Ivs were states so they were set to 31" << endl;
 						continue;
@@ -258,37 +312,39 @@ Team FileReader::getTeamInfo(string loc) {
 
 					vector<string> ivs = split(line, '/');
 
+					//Look through and see what Ivs are mentioned and what values apply to them
 					for (int i = 0; i < ivs.size(); i++) {
 						ivs[i] = trim(ivs[i]);
 
 						int loc;
 
-						if ((loc = ivs[i].find("Hp")) <= ivs[i].size()) {
+						if ((loc = ivs[i].find("Hp")) != string::npos) {
 							ivCleaned[0] = trim(ivs[i].substr(0, loc));
 
 						}
-						else if ((loc = ivs[i].find("Atk")) <= ivs[i].size()) {
+						else if ((loc = ivs[i].find("Atk")) != string::npos) {
 							ivCleaned[1] = trim(ivs[i].substr(0, loc));
 
 						}
-						else if ((loc = ivs[i].find("Def")) <= ivs[i].size()) {
+						else if ((loc = ivs[i].find("Def")) != string::npos) {
 							ivCleaned[2] = trim(ivs[i].substr(0, loc));
 
 						}
-						else if ((loc = ivs[i].find("SpA")) <= ivs[i].size()) {
+						else if ((loc = ivs[i].find("SpA")) != string::npos) {
 							ivCleaned[3] = trim(ivs[i].substr(0, loc));
 
 						}
-						else if ((loc = ivs[i].find("SpD")) <= ivs[i].size()) {
+						else if ((loc = ivs[i].find("SpD")) != string::npos) {
 							ivCleaned[4] = trim(ivs[i].substr(0, loc));
 
 						}
-						else if ((loc = ivs[i].find("Spe")) <= ivs[i].size()) {
+						else if ((loc = ivs[i].find("Spe")) != string::npos) {
 							ivCleaned[5] = trim(ivs[i].substr(0, loc));
 						}
 					}
-
-				} else if (line[0] == '-') {
+				} 
+				//If a - is found, it means theres a move add it and deal with it later
+				else if (line[0] == '-') {
 					line = line.substr(1);
 					line = trim(line);
 
@@ -312,7 +368,7 @@ Team FileReader::getTeamInfo(string loc) {
 				activeMonInfo.push_back(ivCleaned[i]);
 			}
 
-			//Add Moves
+			//Add All Moves even if there's more than 4
 			for (int i = 0; i < moves.size(); i++) {
 				activeMonInfo.push_back(moves[i]);
 			}
@@ -322,6 +378,7 @@ Team FileReader::getTeamInfo(string loc) {
 				cout << activeMonInfo[i] << "+" << endl;
 			}*/
 
+			//Create each new ActivePokemon and store them
 			ActivePokemon newPoke(activeMonInfo);
 			activePokes.push_back(newPoke);
 		}
@@ -329,6 +386,7 @@ Team FileReader::getTeamInfo(string loc) {
 
 	cout << "Finished scanning Team" << endl;
 
+	//Create the the teams using all the pokemon found
 	Team team(activePokes);
 
 	return team;

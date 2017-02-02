@@ -1,29 +1,12 @@
-﻿  MoveEffectManager.cpp
+﻿  Util.cpp
 c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\activepokemon.h(10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\moveeffectmanager.cpp(123): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\moveeffectmanager.cpp(127): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
   ActivePokemon.cpp
 c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\activepokemon.h(10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\activepokemon.cpp(147): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\activepokemon.cpp(349): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\activepokemon.cpp(367): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-  ActionManager.cpp
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\activepokemon.h(10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(29): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(30): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(131): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(355): warning C4101: 'hit': unreferenced local variable
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(468): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(628): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\activepokemon.cpp(162): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\activepokemon.cpp(421): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\activepokemon.cpp(443): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
   Generating Code...
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\activepokemon.cpp(291): warning C4715: 'ActivePokemon::getStatBoost': not all control paths return a value
-  Skipping... (no relevant changes detected)
-  Pokemon.cpp
-  Move.cpp
-  Util.cpp
-  Team.cpp
-  PokemonBattleSim.cpp
-  FileReader.cpp
-  DamageManager.cpp
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\activepokemon.cpp(307): warning C4715: 'ActivePokemon::getStatBoost': not all control paths return a value
+c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\util.cpp(280): warning C4715: 'Util::getStatBoostStringFromEnum': not all control paths return a value
   PokemonBattleSim.vcxproj -> C:\Users\Guila\documents\visual studio 2015\Projects\PokemonBattleSim\x64\Debug\PokemonBattleSim.exe
   PokemonBattleSim.vcxproj -> C:\Users\Guila\documents\visual studio 2015\Projects\PokemonBattleSim\x64\Debug\PokemonBattleSim.pdb (Full PDB)

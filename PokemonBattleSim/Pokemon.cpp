@@ -1,6 +1,6 @@
 #include "Pokemon.h"
 
-//Dummy Pokemon
+//Dummy Pokemon, in case we need it
 Pokemon::Pokemon() {
 	ID = -1;
 	name = "NULL";
@@ -13,9 +13,10 @@ Pokemon::Pokemon() {
 	moves = {};
 }
 
+//Actual pokemon cronstructor
+	//Reads in a split up line from the Pokemon.txt file
 Pokemon::Pokemon(vector<string> input){
-	//Parse the line and make it happen
-
+	//Convert anything to an int if its needed as a number
 	ID = stoi(input[Util::POKE_ID]);
 	name = input[Util::POKE_NAME];
 	internalName = input[Util::POKE_INT_NAME];
@@ -27,8 +28,10 @@ Pokemon::Pokemon(vector<string> input){
 			stoi(input[Util::POKE_SP_DEF]), 
 			stoi(input[Util::POKE_SPEED])};
 
+	//Convert the string into the type Enum
 	types = {Util::getPokeTypeEnumFromString(input[Util::POKE_TYPE1]), Util::getPokeTypeEnumFromString(input[Util::POKE_TYPE2])};
 
+	//Add all possible moves that can be used by the pokemon
 	for (int i = Util::POKE_MOVE_START; i < input.size(); i++) {
 		moves.push_back(input[i]);
 	}
@@ -39,6 +42,7 @@ Pokemon::~Pokemon(){
 
 }
 
+//All the getters for the pokemon's data
 string Pokemon::getName() {
 	return name;
 }
@@ -59,11 +63,11 @@ vector<Util::PokeType> Pokemon::getType() {
 	return types;
 }
 
-//Determine what i want to get from this
 vector<string> Pokemon::getMoves() {
 	return moves;
 }
 
+//print used to debug any issues
 void Pokemon::print() {
 	cout << "Name: " << name << endl;
 	cout << "Internal Name: " << internalName << endl;
