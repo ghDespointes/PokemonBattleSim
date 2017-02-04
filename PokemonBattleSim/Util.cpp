@@ -7,10 +7,64 @@
 const string Util::POKE_DEF_LOC = "Pokemon.txt";
 const string Util::MOVE_DEF_LOC = "Moves.txt";
 
+const string Util::PLAYER_TEAM = "PlayerTeam.txt";
+const string Util::ENEMY_TEAM = "EnemyTeam.txt";
+
 //Set nature effects on stats
 const double Util::NATURE_STANDARD = 1.0;
 const double Util::NATURE_INCREASE = 1.1;
 const double Util::NATURE_DECREASE = .9;
+
+//Burn Damage
+const double Util::BURN_DAMAGE = 0.0625;
+
+//Poison Damage
+const double Util::POISON_DAMAGE = 0.125;
+
+//Bad Poison Damage
+const double Util::BAD_POISON_DAMAGE = 0.0625;
+
+//STAB boost
+const double Util::STAB_BOOST = 1.5;
+
+//Crit Boost
+const double Util::CRIT_BOOST = 1.5;
+
+//Crit Chances by level
+const double Util::CRIT_LEVEL_0 = 1.0/16.0;
+const double Util::CRIT_LEVEL_1 = 1.0/8.0;
+const double Util::CRIT_LEVEL_2 = 1.0/2.0;
+const double Util::CRIT_LEVEL_3 = 1.0;
+
+//Stat Modifiers by level
+const double Util::STAT_MOD_LEVEL_N6 = 2.0 / 8.0;
+const double Util::STAT_MOD_LEVEL_N5 = 2.0 / 7.0;
+const double Util::STAT_MOD_LEVEL_N4 = 2.0 / 6.0;
+const double Util::STAT_MOD_LEVEL_N3 = 2.0 / 5.0;
+const double Util::STAT_MOD_LEVEL_N2 = 2.0 / 4.0;
+const double Util::STAT_MOD_LEVEL_N1 = 2.0 / 3.0;
+const double Util::STAT_MOD_LEVEL_0 = 1;
+const double Util::STAT_MOD_LEVEL_1 = 3.0 / 2.0;
+const double Util::STAT_MOD_LEVEL_2 = 4.0 / 2.0;
+const double Util::STAT_MOD_LEVEL_3 = 5.0 / 2.0;
+const double Util::STAT_MOD_LEVEL_4 = 6.0 / 2.0;
+const double Util::STAT_MOD_LEVEL_5 = 7.0 / 2.0;
+const double Util::STAT_MOD_LEVEL_6 = 8.0 / 2.0;
+
+//Accuracy Modifiers by level
+const double Util::ACC_MOD_LEVEL_N6 = 3.0 / 9.0;
+const double Util::ACC_MOD_LEVEL_N5 = 3.0 / 8.0;
+const double Util::ACC_MOD_LEVEL_N4 = 3.0 / 7.0;
+const double Util::ACC_MOD_LEVEL_N3 = 3.0 / 6.0;
+const double Util::ACC_MOD_LEVEL_N2 = 3.0 / 5.0;
+const double Util::ACC_MOD_LEVEL_N1 = 3.0 / 4.0;
+const double Util::ACC_MOD_LEVEL_0 = 1;
+const double Util::ACC_MOD_LEVEL_1 = 4.0 / 3.0;
+const double Util::ACC_MOD_LEVEL_2 = 5.0 / 3.0;
+const double Util::ACC_MOD_LEVEL_3 = 6.0 / 3.0;
+const double Util::ACC_MOD_LEVEL_4 = 7.0 / 3.0;
+const double Util::ACC_MOD_LEVEL_5 = 8.0 / 3.0;
+const double Util::ACC_MOD_LEVEL_6 = 9.0 / 3.0;
 
 //Sets up all the pokemon and move Data that we can refer to
 	//Maps allow for fast look up
@@ -27,10 +81,16 @@ Pokemon Util::getPoke(string intName) {
 	return pokeHash.at(intName);
 }
 
-//Return the number of pokemon of that name that exists
-//Basically used to usee if it exists
+//Return the number of Moves of that name that exists
+//Basically used to use if it exists
 int Util::checkMove(string intName) {
 	return moveHash.count(intName);
+}
+
+//Return the number of pokemon of that name that exists
+//Basically used to use if it exists
+int Util::checkPoke(string intName) {
+	return pokeHash.count(intName);
 }
 
 //Returns the correct corresponding type as a string

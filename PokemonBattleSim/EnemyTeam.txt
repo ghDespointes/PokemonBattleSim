@@ -8,31 +8,50 @@
 #- MoveName
 #- MoveName
 
-Blastoise @ Leftovers  
-Ability: Torrent
-EVs: 252 Hp / 252 Def / 4 SpD
-Naive Nature  
-IVs: 0 Atk
-- Bubble Beam
-- Ice Beam
-- Mega Drain
-- Bite
-
-Charizard @ Life Orb
-Ability: Blaze
+Raichu
 EVs: 252 SpA / 4 Def / 252 Spe
 Timid Nature  
-IVs: 0 Atk
+- Surf
+- Sing
 - Flamethrower
-- Bubble
-- Tackle
-- Tail whip
+- Leer
 
-Venusaur @ Black Sludge
-Ability: Overgrow
-EVs: 252 Hp / 252 SpD / 4 Spe
-Naive Nature
-- Flamethrower
-- Bubble
-- Tackle
-- Tail whip
+Nidoking
+EVs: 252 HP / 252 Att / 4 SpD
+Jolly Nature
+- Double Kick
+- Roar
+- Body Slam
+- Pin Missle
+
+Parasect
+EVs: 252 HP / 252 Def / 4 SpD
+Relaxed Nature
+- Sleep Powder
+- Poison Powder
+- Mega Drain
+- Super Sonic
+
+Hitmonlee
+EVs: 252 Att / 4 SpD / 252 Spe
+Jolly Nature
+- Jump Kick
+- Rolling Kick
+- Take Down
+- Whirlwind
+
+Beedrill
+EVs: 252 Hp / 252 Def / 4 SpD
+Jolly Nature
+- Twin Needle
+- Double Kick
+- Poison Sting
+- Swords Dance
+
+Gyarados
+EVs: 252 Att / 4 SpD / 252 Spe
+Jolly Nature
+- Wing Attack
+- Strength
+- Leer
+- Ice Punch

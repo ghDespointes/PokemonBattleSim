@@ -1,18 +1,2 @@
-﻿  PokemonBattleSim.cpp
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\pokemonbattlesim.cpp(42): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  ActionManager.cpp
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(35): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(36): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(165): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(592): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(592): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(599): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\actionmanager.cpp(807): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  AIManager.cpp
-c:\users\guila\documents\visual studio 2015\projects\pokemonbattlesim\pokemonbattlesim\aimanager.cpp(113): warning C4101: 'type': unreferenced local variable
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  MoveEffectManager.cpp
-  DamageManager.cpp
-  PokemonBattleSim.vcxproj -> C:\Users\Guila\documents\visual studio 2015\Projects\PokemonBattleSim\x64\Debug\PokemonBattleSim.exe
+﻿  PokemonBattleSim.vcxproj -> C:\Users\Guila\documents\visual studio 2015\Projects\PokemonBattleSim\x64\Debug\PokemonBattleSim.exe
   PokemonBattleSim.vcxproj -> C:\Users\Guila\documents\visual studio 2015\Projects\PokemonBattleSim\x64\Debug\PokemonBattleSim.pdb (Full PDB)

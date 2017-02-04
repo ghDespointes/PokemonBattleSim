@@ -77,7 +77,7 @@ double DamageManager::checkStab(Util::PokeType moveType, Pokemon user) {
 
 	for (int i = 0; i < types.size(); i++) {
 		if (types[i] == moveType) {
-			return 1.5;
+			return Util::STAB_BOOST;
 		}
 	}
 
@@ -98,7 +98,7 @@ double DamageManager::getModifier(Move move, Pokemon user, Pokemon victim, bool 
 
 	//Crits increase damage by 1.5
 	if (crit && type != 0) {
-		critVal = 1.5;
+		critVal = Util::CRIT_BOOST;
 		cout << "It's a critical hit! ";
 	}
 
@@ -157,7 +157,7 @@ double DamageManager::calcBaseDamage(Move move, ActivePokemon attacker, ActivePo
 
 		//If the attack is burned the damage they deal is halved
 		if (attacker.getStatus() == Util::Burned) {
-			attack = attack / 2;
+			attack = attack / Util::BURN_ATT_REDUCTION;
 		}
 	} 
 	//If the move is physical, only use the Special stats (Special Attack and special defense)

@@ -113,6 +113,9 @@ public:
 	static const string POKE_DEF_LOC;
 	static const string MOVE_DEF_LOC;
 
+	static const string PLAYER_TEAM;
+	static const string ENEMY_TEAM;
+
 	//Pokemon Data locations
 	static const int POKE_ID = 0;
 	static const int POKE_NAME = 1;
@@ -175,12 +178,110 @@ public:
 	static const double NATURE_INCREASE;
 	static const double NATURE_DECREASE;
 
+	//MAX EV Values
+	static const int EV_MAX_TOTAL = 510;
+	static const int EV_MAX = 252;
+
+	//MAX IV Value
+	static const int IV_MAX = 31;
+
+	//AI Status Move States
+	static const int AI_HIGH_HEALTH = 70;
+	static const int AI_MED_HEALTH = 30;
+
+	static const int AI_HIGH_CHANCE = 50;
+	static const int AI_MED_CHANCE = 35;
+	static const int AI_LOW_CHANCE = 15;
+
+	//Paralyze Speed Affectiveness 1/N
+	static const int PARA_SPEED_EFFECT = 2;
+	static const int PARA_CHANCE = 4;
+
+	//Unfreeze chance 1/N
+	static const int UNFREEZE_CHANCE = 5;
+
+	//Burn Damage
+	static const double BURN_DAMAGE;
+	static const int BURN_ATT_REDUCTION = 2;
+
+	//Poison Damage
+	static const double POISON_DAMAGE;
+
+	//Bad Poison Damage
+	static const double BAD_POISON_DAMAGE;
+
+	//Confusion hit chance [0,99]
+	static const int CONFUSION_CHANCE = 33;
+
+	//Minimum Accuracy Hit Chance
+	static const int MIN_HIT_CHANCE = 33;
+
+	//Crit chance by level
+	static const double CRIT_LEVEL_0;
+	static const double CRIT_LEVEL_1;
+	static const double CRIT_LEVEL_2;
+	static const double CRIT_LEVEL_3;
+
+	//Stat Modifiers by level
+	static const double STAT_MOD_LEVEL_N6;
+	static const double STAT_MOD_LEVEL_N5;
+	static const double STAT_MOD_LEVEL_N4;
+	static const double STAT_MOD_LEVEL_N3;
+	static const double STAT_MOD_LEVEL_N2;
+	static const double STAT_MOD_LEVEL_N1;
+	static const double STAT_MOD_LEVEL_0;
+	static const double STAT_MOD_LEVEL_1;
+	static const double STAT_MOD_LEVEL_2;
+	static const double STAT_MOD_LEVEL_3;
+	static const double STAT_MOD_LEVEL_4;
+	static const double STAT_MOD_LEVEL_5;
+	static const double STAT_MOD_LEVEL_6;
+
+	//Accuracies by level
+	//Stat Modifiers by level
+	static const double ACC_MOD_LEVEL_N6;
+	static const double ACC_MOD_LEVEL_N5;
+	static const double ACC_MOD_LEVEL_N4;
+	static const double ACC_MOD_LEVEL_N3;
+	static const double ACC_MOD_LEVEL_N2;
+	static const double ACC_MOD_LEVEL_N1;
+	static const double ACC_MOD_LEVEL_0;
+	static const double ACC_MOD_LEVEL_1;
+	static const double ACC_MOD_LEVEL_2;
+	static const double ACC_MOD_LEVEL_3;
+	static const double ACC_MOD_LEVEL_4;
+	static const double ACC_MOD_LEVEL_5;
+	static const double ACC_MOD_LEVEL_6;
+
+	//Min Max StatBoosts
+	static const int MAX_STAT_BOOST = 6;
+	static const int MIN_STAT_BOOST = -6;
+
+	//Priority Level Min Max
+	static const int MAX_PRIORITY = 6;
+	static const int MIN_PRIORITY = -6;
+
+	//Stab Effectiveness
+	static const double STAB_BOOST;
+
+	//Crit multiplier
+	static const double CRIT_BOOST;
+
+	//Multihit move chances out of 100
+	static const int HIT2 = 333;
+	static const int HIT3 = 333;
+	static const int HIT4 = 167;
+
+	//ONE HIT KO Level Offset
+	static const int OHKO_OFFSET = 30;
+
 	//Returns information about moves and pokemon
 	static Move getMove(string intName);
 	static Pokemon getPoke(string intName);
 
 	//Checks to see if a pokemon exists
 	static int checkMove(string intName);
+	static int checkPoke(string intName);
 
 	//Convert between enums and string
 		//Used when parsing and printing information to the player

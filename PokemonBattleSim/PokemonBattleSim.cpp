@@ -27,8 +27,8 @@ int main(){
 
 	//Set up player and enemy teams
 		//Parse the team files
-	Team plrTeam = FileReader::getTeamInfo("PlayerTeam.txt");
-	Team enemyTeam = FileReader::getTeamInfo("EnemyTeam.txt");
+	Team plrTeam = FileReader::getTeamInfo(Util::PLAYER_TEAM);
+	Team enemyTeam = FileReader::getTeamInfo(Util::ENEMY_TEAM);
 
 	//Initialize ActionManager
 		//Will be in charge of performing any actions the player needs
@@ -37,6 +37,12 @@ int main(){
 
 	//Controls whether game status info will be printed for the player
 	bool printInfo = true;
+
+	//Make sure teams were parsed properly
+	if (plrTeam.getActive()->getName() == "NONE" || enemyTeam.getActive()->getName() == "NONE") {
+		system("pause");
+		return 0;
+	}
 
 	//Set seed as current time for any randomness we will need
 	srand(time(0));
@@ -73,8 +79,6 @@ int main(){
 		//Create AI module and have ai decide
 		//Call on AI module to choose most appropriate action
 		enmAction = aiMan.determineAction(Util::Attack);
-			
-		//TurnAction(Util::Enemy_1, Util::Attack, "1");
 
 		//Determine turn order and populate teh order into a queue
 		actionMan.createActionQueue(plrAction, enmAction);

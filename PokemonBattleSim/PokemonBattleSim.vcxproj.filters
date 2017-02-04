@@ -19,16 +19,16 @@
     <Text Include="Pokemon.txt">
       <Filter>Source Files</Filter>
     </Text>
-    <Text Include="Moves.txt">
+    <Text Include="MoveChecklist.txt">
       <Filter>Source Files</Filter>
     </Text>
-    <Text Include="PlayerTeam.txt">
+    <Text Include="Moves.txt">
       <Filter>Source Files</Filter>
     </Text>
     <Text Include="EnemyTeam.txt">
       <Filter>Source Files</Filter>
     </Text>
-    <Text Include="MoveChecklist.txt">
+    <Text Include="PlayerTeam.txt">
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>

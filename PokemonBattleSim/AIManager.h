@@ -20,6 +20,7 @@ public:
 	~AIManager();
 
 	double calculateMoveEffectiveness(ActiveMove move);
+	double calculateStatusEffectivness(ActivePokemon* active, ActiveMove move);
 	double calculateSwitchEffectiveness(ActivePokemon mon);
 	int calculateBestMove();
 	int calculateBestSwitch();

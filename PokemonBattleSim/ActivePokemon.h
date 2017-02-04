@@ -118,6 +118,11 @@ public:
 
 	//Health related getters and setters
 	int getHealth();
+
+	//Returns health as a percantage to various decimal precision values
+	double getHealthPercent();
+	double getHealthPercentRounded();
+
 	void setHealth(int newhealth);
 	void damage(int ammount);
 	void damagePercent(double percent);
@@ -172,6 +177,12 @@ public:
 	int findMove(string name);
 	//Return full list of known moves
 	vector<ActiveMove> getMoves();
+
+	//A workaround for a weird pointer error i was having
+	//Decrements PP of that move
+	int getPP(int move);
+	//Decrements PP of that move
+	void decrementPP(int move);
 
 	//Many print functions that depend on the situation
 	void print();

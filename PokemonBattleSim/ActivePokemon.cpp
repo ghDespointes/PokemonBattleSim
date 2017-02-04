@@ -29,6 +29,7 @@ ActivePokemon::ActivePokemon(vector<string> input){
 
 	ID = pokeInfo.getID();
 
+
 	lvl = stoi(input[Util::ACTIVE_MON_LEVEL]);
 
 	nature = input[Util::ACTIVE_MON_NATURE];
@@ -81,11 +82,18 @@ ActivePokemon::ActivePokemon(vector<string> input){
 
 	//Add between 0-4 moves
 	for (int i = 0; i < 4; i++) {
+		string moveName = input[Util::ACTIVE_MON_MOVE_LOC + i];
+
+		if (Util::checkMove(moveName) == 0) {
+			cout << moveName << " doesn't exist. Please make sure you typed it correctly." << endl;
+			continue;
+		}
+
 		if (Util::ACTIVE_MON_MOVE_LOC + i >= input.size()) {
 			break;
 		}
 
-		ActiveMove newMove(input[Util::ACTIVE_MON_MOVE_LOC + i]);
+		ActiveMove newMove(moveName);
 		moves.push_back(newMove);
 	}
 }
@@ -103,18 +111,18 @@ void ActivePokemon::fixEvs() {
 	int total = 0;
 
 	for (int i = 0; i < evs.size(); i++) {
-		if (total >= 510) {
+		if (total >= Util::EV_MAX_TOTAL) {
 			evs[i] = 0;
 
-		} else if (total + evs[i] > 510) {
-			int dif = 510 - total;
+		} else if (total + evs[i] > Util::EV_MAX_TOTAL) {
+			int dif = Util::EV_MAX_TOTAL - total;
 
-			total = 510;
+			total = Util::EV_MAX_TOTAL;
 			evs[i] = dif;
 
-		} else if (evs[i] > 252) {
-			evs[i] = 252;
-			total += 252;
+		} else if (evs[i] > Util::EV_MAX) {
+			evs[i] = Util::EV_MAX;
+			total += Util::EV_MAX;
 
 		} else if (evs[i] < 0) {
 			evs[i] = 0;
@@ -129,8 +137,8 @@ void ActivePokemon::fixEvs() {
 //Simply checks if between 0-31 and clamps it
 void ActivePokemon::fixIVs() {
 	for (int i = 0; i < evs.size(); i++) {
-		if (ivs[i] > 31) {
-			ivs[i] = 31;
+		if (ivs[i] > Util::IV_MAX) {
+			ivs[i] = Util::IV_MAX;
 		} else if (ivs[i] < 0) {
 			ivs[i] = 0;
 		}
@@ -250,58 +258,58 @@ double ActivePokemon::getStatBoost(Util::StatBoost stat) {
 	//Crit chance ranges from 1/16 - 100%
 	else if (stat == Util::CritBoost) {
 		if (statBoosts[stat] <= 0) {
-			return 1.0/16.0;
+			return Util::CRIT_LEVEL_0;
 		}
 		else if (statBoosts[stat] == 1) {
-			return 1.0/8.0;
+			return Util::CRIT_LEVEL_1;
 		}
 		else if (statBoosts[stat] == 2) {
-			return 1.0/2.0;
+			return Util::CRIT_LEVEL_2;
 		}
 		else if (statBoosts[stat] >= 3) {
-			return 1;
+			return Util::CRIT_LEVEL_3;
 		}
 	}
 	//Main stats range from 1/4 - 4
 	else {
 		if (statBoosts[stat] == -6) {
-			return 2.0 / 8.0;
+			return Util::STAT_MOD_LEVEL_N6;
 		}
 		else if (statBoosts[stat] == -5) {
-			return 2.0 / 7.0;
+			return Util::STAT_MOD_LEVEL_N5;
 		}
 		else if (statBoosts[stat] == -4) {
-			return 2.0 / 6.0;
+			return Util::STAT_MOD_LEVEL_N4;
 		}
 		else if (statBoosts[stat] == -3) {
-			return 2.0 / 5.0;
+			return Util::STAT_MOD_LEVEL_N3;
 		}
 		else if (statBoosts[stat] == -2) {
-			return 2.0 / 4.0;
+			return Util::STAT_MOD_LEVEL_N2;
 		}
 		else if (statBoosts[stat] == -1) {
-			return 2.0 / 3.0;
+			return Util::STAT_MOD_LEVEL_N1;
 		}
 		else if (statBoosts[stat] == 0) {
-			return 1;
+			return Util::STAT_MOD_LEVEL_0;
 		}
 		else if (statBoosts[stat] == 1) {
-			return 3.0/2.0;
+			return Util::STAT_MOD_LEVEL_1;
 		}
 		else if (statBoosts[stat] == 2) {
-			return 2;
+			return Util::STAT_MOD_LEVEL_2;
 		}
 		else if (statBoosts[stat] == 3) {
-			return 5.0 / 2.0;
+			return Util::STAT_MOD_LEVEL_3;
 		}
 		else if (statBoosts[stat] == 4) {
-			return 3.0;
+			return Util::STAT_MOD_LEVEL_4;
 		}
 		else if (statBoosts[stat] == 5) {
-			return 7.0 / 2.0;
+			return Util::STAT_MOD_LEVEL_5;
 		}
 		else if (statBoosts[stat] == 6) {
-			return 4.0;
+			return Util::STAT_MOD_LEVEL_6;
 		}
 	}
 }
@@ -310,43 +318,43 @@ double ActivePokemon::getStatBoost(Util::StatBoost stat) {
 //Returns final accuracy as a double
 double ActivePokemon::calculateAccuracy(int level) {
 	if (level <= -6) {
-		return 3.0 / 9.0;
+		return Util::ACC_MOD_LEVEL_N6;
 	}
 	else if (level == -5) {
-		return 3.0 / 8.0;
+		return Util::ACC_MOD_LEVEL_N5;
 	}
 	else if (level == -4) {
-		return 3.0 / 7.0;
+		return Util::ACC_MOD_LEVEL_N4;
 	}
 	else if (level == -3) {
-		return 3.0 / 6.0;
+		return Util::ACC_MOD_LEVEL_N3;
 	}
 	else if (level == -2) {
-		return 3.0 / 5.0;
+		return Util::ACC_MOD_LEVEL_N2;
 	}
 	else if (level == -1) {
-		return 3.0 / 4.0;
+		return Util::ACC_MOD_LEVEL_N1;
 	}
 	else if (level == 0) {
-		return 1;
+		return Util::ACC_MOD_LEVEL_0;
 	}
 	else if (level == 1) {
-		return 4.0 / 3.0;
+		return Util::ACC_MOD_LEVEL_1;
 	}
 	else if (level == 2) {
-		return 5.0 / 3.0;
+		return Util::ACC_MOD_LEVEL_2;
 	}
 	else if (level == 3) {
-		return 2;
+		return Util::ACC_MOD_LEVEL_3;
 	}
 	else if (level == 4) {
-		return 7.0 / 3.0;
+		return Util::ACC_MOD_LEVEL_4;
 	}
 	else if (level == 5) {
-		return 8.0 / 3.0;
+		return Util::ACC_MOD_LEVEL_5;
 	}
 	else if (level >= 6) {
-		return 3;
+		return Util::ACC_MOD_LEVEL_6;
 	}
 
 	return 1;
@@ -356,12 +364,12 @@ double ActivePokemon::calculateAccuracy(int level) {
 //StatBoosts generally range from -6 - 6
 	//Crit chance ranges from 0 - 6
 void ActivePokemon::changeStatBoost(Util::StatBoost stat, int quant) {
-	if (statBoosts[stat] == 6 && quant > 0) {
+	if (statBoosts[stat] == Util::MAX_STAT_BOOST && quant > 0) {
 		cout << name << "'s STAT " << "won't increase anymore" << endl;
 
 		return;
 	}
-	else if (statBoosts[stat] == -6 && quant < 0) {
+	else if (statBoosts[stat] == Util::MIN_STAT_BOOST && quant < 0) {
 		cout << name << "'s STAT " << "won't decrease anymore" << endl;
 
 		return;
@@ -369,11 +377,11 @@ void ActivePokemon::changeStatBoost(Util::StatBoost stat, int quant) {
 	
 	statBoosts[stat] += quant;
 
-	if (statBoosts[stat] > 6) {
-		statBoosts[stat] = 6;
+	if (statBoosts[stat] > Util::MAX_STAT_BOOST) {
+		statBoosts[stat] = Util::MAX_STAT_BOOST;
 	}
-	else if (statBoosts[stat] < -6) {
-		statBoosts[stat] = -6;
+	else if (statBoosts[stat] <  Util::MIN_STAT_BOOST) {
+		statBoosts[stat] = Util::MIN_STAT_BOOST;
 	}
 
 	cout << name << "'s " << Util::getStatBoostStringFromEnum(stat);
@@ -408,6 +416,18 @@ void ActivePokemon::resetStatBoost() {
 //Returns current health
 int ActivePokemon::getHealth() {
 	return health;
+}
+
+//Returns health as a percetage
+double ActivePokemon::getHealthPercent() {
+	return ((double)health / (double)stats[0]) * 100.0;
+}
+
+//Returns health as a percentage to 1 decimal point
+double ActivePokemon::getHealthPercentRounded() {
+	int healthTemp = getHealthPercent()*10.0;
+
+	return (double)healthTemp / 10;
 }
 
 //Sets current health
@@ -700,6 +720,14 @@ vector<ActiveMove> ActivePokemon::getMoves() {
 	return moves;
 }
 
+int ActivePokemon::getPP(int move) {
+	return moves[move].getPP();
+}
+
+void ActivePokemon::decrementPP(int move) {
+	moves[move].decrementPP();
+}
+
 //Debug print
 void ActivePokemon::print() {
 	cout << "Name: " << name << endl;
@@ -752,16 +780,13 @@ void ActivePokemon::print() {
 //Print used when pokemon is active
 	//Provides most information
 void ActivePokemon::printBattleInfo() {
-	double calcHealth = (int)((double)(health * 1000) / (double)getStat(Util::HP));
 	string statusCond = Util::getStatusStringFromEnum(status);
 
 	if (status == Util::Standard) {
 		statusCond = "";
 	}
 
-	calcHealth = (calcHealth / 10);
-
-	cout << "HP: " << calcHealth << "%\t" << statusCond << endl;
+	cout << "HP: " << getHealthPercentRounded() << "%\t" << statusCond << endl;
 	cout << name << "\t";
 	cout << "Lvl: " << lvl << endl;
 
@@ -790,16 +815,13 @@ void ActivePokemon::printBattleInfo() {
 
 //Print used for pokemon still in party
 void ActivePokemon::printBasicInfo() {
-	double calcHealth = (int)((double)(health * 1000) / (double)getStat(Util::HP));
 	string statusCond = Util::getStatusStringFromEnum(status);
 
 	if (status == Util::Standard) {
 		statusCond = "";
 	}
 
-	calcHealth = (calcHealth / 10);
-
-	cout << "HP: " << calcHealth << "%\t" << statusCond << endl;
+	cout << "HP: " << getHealthPercentRounded() << "%\t" << statusCond << endl;
 	cout << name << "\t" << item << "\t" << ability << endl;
 
 	vector<Util::PokeType> types = Util::getPoke(internalName).getType();
@@ -822,16 +844,13 @@ void ActivePokemon::printBasicInfo() {
 
 //Print enemy active pokemon information
 void ActivePokemon::printEnemyInfo() {
-	double calcHealth = (int)((double)(health * 1000) / (double)getStat(Util::HP));
 	string statusCond = Util::getStatusStringFromEnum(status);
 
 	if (status == Util::Standard) {
 		statusCond = "";
 	}
 
-	calcHealth = (calcHealth / 10);
-
-	cout << "HP: " << calcHealth << "%\t" << statusCond << endl;
+	cout << "HP: " << getHealthPercentRounded() << "%\t" << statusCond << endl;
 	cout << name << endl;
 
 	vector<Util::PokeType> types = Util::getPoke(internalName).getType();
@@ -846,16 +865,13 @@ void ActivePokemon::printEnemyInfo() {
 
 //print enemy team information
 void ActivePokemon::printEnemyBasicInfo() {
-	double calcHealth = (int)((double)(health * 1000) / (double)getStat(Util::HP));
 	string statusCond = Util::getStatusStringFromEnum(status);
 
 	if (status == Util::Standard) {
 		statusCond = "";
 	}
 
-	calcHealth = (calcHealth / 10);
-
-	cout << "HP: " << calcHealth << "%\t" << statusCond << endl;
+	cout << "HP: " << getHealthPercentRounded() << "%\t" << statusCond << endl;
 	cout << name << endl;
 
 	vector<Util::PokeType> types = Util::getPoke(internalName).getType();

@@ -1,6 +1,7 @@
 #include "Team.h"
 
 Team::Team() {
+	team = { ActivePokemon() };
 }
 
 //Sets the team
@@ -65,10 +66,12 @@ void Team::print() {
 
 //Print the most information about the active pokemon and useful information about the others
 void Team::printBattleInfo() {
+	cout << "-------------------------------------------------------" << endl;
 	cout << "PLAYER INFORMATION:" << endl;
 
 	team[0].printBattleInfo();
 
+	cout << "----------------------------------" << endl;
 	cout << "Switch Pokemon:" << endl;
 	for (int i = 1; i < team.size(); i++) {
 		cout << "[" << i << "]" << endl;
@@ -79,6 +82,7 @@ void Team::printBattleInfo() {
 
 //Print information the player needs to know about the enemy team
 void Team::printEnemyInfo() {
+	cout << "-------------------------------------------------------" << endl;
 	cout << "ENEMY INFORMATION:" << endl;
 	team[0].printEnemyInfo();
 

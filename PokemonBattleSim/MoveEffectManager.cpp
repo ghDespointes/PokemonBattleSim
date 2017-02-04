@@ -8,6 +8,7 @@ int MoveEffectManager::activateCritEffect(Move move) {
 	if (effect == 1 || move.getInternalName() == "RAZORWIND") {
 		return 1;
 	}
+	//Saved for moves that will always crit
 	else if (effect == 100) {
 		return 4;
 	}
@@ -29,12 +30,12 @@ int MoveEffectManager::activateMultiHitEffect(Move move) {
 
 		int random = rand() % 1000;
 		//1/3 chance hitting twice, 1/3 chance hitting 3 times, 1/6 chance hitting 4 times, 1/6 chance  hitting 5 times
-		if (random < 333) {
+		if (random < Util::HIT2) {
 			output = 2;
 		}
-		else if (random < 666) {
+		else if (random < (Util::HIT2 + Util::HIT3)) {
 			output = 3;
-		} else if (random < 833) {
+		} else if (random < (Util::HIT2 + Util::HIT3 + Util::HIT4)) {
 			output = 4;
 		} else {
 			output = 5;
@@ -53,10 +54,10 @@ int MoveEffectManager::activateOHKOAcc(Move move, int *hitChance, ActivePokemon 
 	
 	if (effect == 7) {
 		//hit chance increases as the user is higher level than the victim
-		*hitChance = user->getLevel() - victim->getLevel() + 30;
+		*hitChance = user->getLevel() - victim->getLevel() + Util::OHKO_OFFSET;
 
 		//If victim is higher level, the move will always miss
-		if (*hitChance < 30) {
+		if (*hitChance < Util::OHKO_OFFSET) {
 			hitChance = 0;
 		}
 
@@ -122,15 +123,16 @@ void MoveEffectManager::activateRecoil(Move move, ActivePokemon *user, int damag
 
 	if (effect == 17) {
 		//If code is 17 damage the user by a specified ammount
-		recoilAmm = 1 / move.getEffChance();
+		recoilAmm = 1.0 / move.getEffChance();
 
 		user->damage(damage * recoilAmm);
-		cout << "Ya hurt yourself." << endl;
+		cout << user->getName() << "took some recoil damage." << endl;
 	} else if (effect == 30) {
 		//If code is 30 heal the user by a specified ammount
-		recoilAmm = 1 / move.getEffChance();
+		recoilAmm = 1.0 / move.getEffChance();
 		user->heal(damage * recoilAmm);
-		cout << "You got healed." << endl;
+
+		cout << user->getName() << " healed some damage." << endl;
 	}
 }
 

@@ -37,7 +37,7 @@ public:
 	int getMaxPP();
 
 	//CHANGE TO DECREMENT PP
-	void setPP(int pp);
+	void decrementPP();
 	int getPP();
 
 	//Prints for debugging and for the player

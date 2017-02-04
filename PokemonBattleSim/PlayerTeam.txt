@@ -8,31 +8,51 @@
 #- MoveName
 #- MoveName
 
-Charizard
-Ability: Blaze
-EVs: 252 SpA / 4 Def / 252 Spe
+Kangaskhan
+EVs: 252 Att / 4 Def / 252 Spe
 Timid Nature  
-IVs: 0 Atk
-- Stomp
-- Stun Powder
-- Tail Whip
-- Bite
+- Jump Kick
+- Double-Edge
+- Swords Dance
+- Seismic Toss
 
-Blastoise @ Leftovers  
-Ability: Torrent
-EVs: 252 Hp / 252 Def / 4 SpD
+Venusaur
+EVs: 252 Hp / 252 SpA / 4 SpD
 Naive Nature  
 IVs: 0 Atk
-- Flamethrower
-- Bubble
-- Tackle
-- Tail Whip
+- Growth
+- Mega Drain
+- Sleep Powder
+- Aurora Beam
 
-Venusaur @ Black Sludge
-Ability: Overgrow
-EVs: 252 Hp / 252 SpD / 4 Spe
+Alakazam
+EVs: 252 SpA / 4 SpD / 252 Spe
 Naive Nature
-- Flamethrower
-- Bubble
-- Tackle
-- Tail whip
+- Psybeam
+- Bubble Beam
+- Disable
+- Super Sonic
+
+Pidgeot
+EVs: 252 Att / 4 SpD / 252 Spe
+Naive Nature
+- Drill Peck
+- Sand Attack
+- Take Down
+- Whirlwind
+
+Sandslash
+EVs: 252 Hp / 252 Def / 4 SpD
+Naive Nature
+- Sand Attack
+- Counter
+- Fury Attack
+- Guillotine
+
+Tentacruel
+EVs: 252 HP / 252 SpD / 4 Def
+Naive Nature
+- Hydro Pump
+- Surf
+- Acid
+- Poison Sting

@@ -79,7 +79,7 @@ unordered_map<string, Move> FileReader::getMoveInfo() {
 	}
 
 
-	cout << "Finished scanning Moves" << endl;
+	//cout << "Finished scanning Moves" << endl;
 	return moveHash;
 }
 
@@ -172,7 +172,7 @@ unordered_map<string, Pokemon> FileReader::getPokeInfo() {
 		}
 	}
 
-	cout << "Finished scanning Pokemon" << endl;
+	//cout << "Finished scanning Pokemon" << endl;
 	return pokeHash;
 }
 
@@ -193,6 +193,8 @@ Team FileReader::getTeamInfo(string loc) {
 			vector<string> itemNamePair;
 			string pokeName;
 			string itemName;
+
+			string formatedName;
 
 			//If an item exists,
 			//Split the first line into Name and item
@@ -216,9 +218,16 @@ Team FileReader::getTeamInfo(string loc) {
 				itemName = "";
 			}
 
+			formatedName = formatName(pokeName);
+
+			if (Util::checkPoke(formatedName) == 0) {
+				cout << pokeName << " doesn't exist. Please make sure you typed it correctly." << endl;
+				return Team();
+			}
+
 			//Add the name, internal Name, and item into the vector
 			activeMonInfo.push_back(pokeName);
-			activeMonInfo.push_back(formatName(pokeName));
+			activeMonInfo.push_back(formatedName);
 			activeMonInfo.push_back(itemName);
 
 			//The level default is level 100
@@ -384,7 +393,7 @@ Team FileReader::getTeamInfo(string loc) {
 		}
 	}
 
-	cout << "Finished scanning Team" << endl;
+	//cout << "Finished scanning Team" << endl;
 
 	//Create the the teams using all the pokemon found
 	Team team(activePokes);

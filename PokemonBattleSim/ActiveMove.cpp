@@ -47,8 +47,8 @@ int ActiveMove::getMaxPP() {
 }
 
 //Getters and setter for PP
-void ActiveMove::setPP(int pp) {
-	currPP = pp;
+void ActiveMove::decrementPP() {
+	currPP--;
 }
 
 int ActiveMove::getPP() {

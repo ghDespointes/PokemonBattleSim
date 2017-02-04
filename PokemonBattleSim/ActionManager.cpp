@@ -37,11 +37,11 @@ void ActionManager::updateTurnOrder() {
 
 	//Check is paralyzed and modify speed accordingly
 	if (plrTeam->getActive()->getStatus() == Util::Paralyzed) {
-		plrSpeed /= 2;
+		plrSpeed /= Util::PARA_SPEED_EFFECT;
 	}
 
 	if (enemyTeam->getActive()->getStatus() == Util::Paralyzed) {
-		enmSpeed /= 2;
+		enmSpeed /= Util::PARA_SPEED_EFFECT;
 	}
 	
 	//Reset tie flag
@@ -203,6 +203,11 @@ bool ActionManager::checkActionLegality(TurnAction* action) {
 			return false;
 		}
 
+		if (team->getActive()->getPP(paramInt) == 0) {
+			cout << "That move is out of PP, please pick another." << endl;
+			return false;
+		}
+
 	//If you are trying to switch
 	} else {
 		//If the parameter is not an int
@@ -268,7 +273,7 @@ void ActionManager::createActionQueue(TurnAction plrAction, TurnAction enmAction
 
 	//Pass through for each other priority level
 		//Add moves at that priority level
-	for (int j = 6; j >= -6; j--) {
+	for (int j = Util::MAX_PRIORITY; j >= Util::MIN_PRIORITY; j--) {
 		for (int i = 0; i < turnOrder.size(); i++) {
 			action = turnActions[turnOrder[i]];
 
@@ -528,7 +533,7 @@ void ActionManager::performAttack(Util::User user, Team *team, Team *otherTeam, 
 		}
 	}
 	else if (active->getStatus() == Util::Frozen) {
-		int random = rand() % 5;
+		int random = rand() % Util::UNFREEZE_CHANCE;
 
 		if (random == 0) {
 			active->setStatus(Util::Standard);
@@ -541,7 +546,7 @@ void ActionManager::performAttack(Util::User user, Team *team, Team *otherTeam, 
 	}
 	//Paralysis is purely random and doesn't rely on decrementing a counter
 	else if (active->getStatus() == Util::Paralyzed) {
-		int random = rand() % 4;
+		int random = rand() % Util::PARA_CHANCE;
 
 		if (random == 0) {
 			cout << active->getName() << " is paralyzed! It can't move!" << endl;
@@ -570,7 +575,7 @@ void ActionManager::performAttack(Util::User user, Team *team, Team *otherTeam, 
 	//If confused decrement and see if the user hit's themselves
 	if (active->decrementVolStatus(Util::Confused)) {
 		//See if they hit themselves and skip their turn if they do
-		if (rand() % 100 < 33) {
+		if (rand() % 100 < Util::CONFUSION_CHANCE) {
 			cout << active->getName() << " hit itself in confusion!" << endl;
 
 			//Calculate the damage of hitting yourself
@@ -585,14 +590,17 @@ void ActionManager::performAttack(Util::User user, Team *team, Team *otherTeam, 
 	move = active->getMoves()[param];
 	moveInfo = Util::getMove(move.getIntName());
 
+	//Decrement the PP
+	active->decrementPP(param);
+
 	//Determine if the move will hit
 	hit = rand() % 100;
 	hitChance = moveInfo.getAcc();
 
 	hitChance *= ActivePokemon::calculateAccuracy(active->getStatBoost(Util::AccBoost) - otherTeam->getActive()->getStatBoost(Util::EvasionBoost));
 
-	if (hitChance < 33) {
-		hitChance = 33;
+	if (hitChance < Util::MIN_HIT_CHANCE) {
+		hitChance = Util::MIN_HIT_CHANCE;
 	}
 
 	//If the move is a One-Hit KO move calculate the odds of hitting (Its based on level)
@@ -779,13 +787,13 @@ void ActionManager::endTurn() {
 		}
 		//Deal damage to any burned pokemon
 		else if (status == Util::Burned) {
-			active->damagePercent(0.0625);
+			active->damagePercent(Util::BURN_DAMAGE);
 			cout << active->getName() << " was hurt by its burn!" << endl;
 			cout << endl;
 		}
 		//Deal damage to any poisoned pokemon
 		else if (status == Util::Poisoned) {
-			active->damagePercent(0.125);
+			active->damagePercent(Util::POISON_DAMAGE);
 			cout << active->getName() << " was hurt by poison!" << endl;
 			cout << endl;
 		}
@@ -793,7 +801,7 @@ void ActionManager::endTurn() {
 		//Currently no way of making a pokemon badly poisoned
 		else if (status == Util::Badly_Poisoned) {
 			active->incrementPoison();
-			active->damagePercent(active->getPoison()*0.0625);
+			active->damagePercent(active->getPoison() * Util::BAD_POISON_DAMAGE);
 			cout << active->getName() << " was hurt by poison!" << endl;
 			cout << endl;
 		}
@@ -814,7 +822,7 @@ void ActionManager::performActions() {
 		actionQueue.pop();
 	}
 
-	cout << endl;
+	//cout << endl;
 	endTurn();
 }
 

@@ -30,6 +30,44 @@ double AIManager::calculateMoveEffectiveness(ActiveMove move) {
 	return effectiveness;
 }
 
+//Will eventually move magic number to Util.h
+
+//Randomly decides if the status move should be used based on the user's health
+//This keep the AI challanging, but fair for the player
+	//by using status moves early it allows the player some potentially free hits
+//Later out of desperation and to ensure the AI deals damage they are more incentized to attack
+double AIManager::calculateStatusEffectivness(ActivePokemon* active, ActiveMove move) {
+	double output = 0;
+	int random = rand() % 100;
+
+	//At hgh health the AI has a 50:50 chance of using a status move
+	if (active->getHealthPercent() > Util::AI_HIGH_HEALTH && random < Util::AI_HIGH_CHANCE) {
+		output = DBL_MAX;
+
+		random = rand() % 100;
+
+		output -= random;
+	}
+	//At around 50% health the AI has a 30% chance to use a status move
+	else if (active->getHealthPercent() > Util::AI_MED_HEALTH && random < Util::AI_MED_CHANCE) {
+		output = DBL_MAX;
+
+		random = rand() % 100;
+
+		output -= random;
+	}
+	//At below 45% the AI has a low chance to use a status move
+	else if (active->getHealthPercent() < Util::AI_MED_HEALTH && random < Util::AI_LOW_CHANCE) {
+		output = DBL_MAX;
+
+		random = rand() % 100;
+
+		output -= random;
+	}
+
+	return output;
+}
+
 //Determines how weak the pokemon is compared the enemy's active pokemon
 //The weaker they are the lower the return value
 //Therefore AI will prefer making the safer switch
@@ -90,8 +128,10 @@ int AIManager::calculateBestMove() {
 
 		}
 		//Status moves will will get complicated quickly
+		//I just made them randomly occur every so often
+		//There is a higher liklihood to use status moves when hp is high than low
 		else {
-		
+			moveEffects[i] = calculateStatusEffectivness(active, moves[i]);
 		}
 	}
 
